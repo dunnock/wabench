@@ -1,7 +1,7 @@
-use ndarray::{Array, Array1};
+use ndarray::Array1;
 use ndarray_rand::RandomExt;
 use ndarray_rand::rand_distr::Uniform;
-use crate::wasmtest::WASMTest;
+use super::WASMTest;
 
 const SIZE: usize = 10_000_000;
 
@@ -10,14 +10,14 @@ pub struct NDArrayTest {
   b: Array1<f64>,
 }
 
-impl WASMTest<f64> for NDArrayTest {
+impl WASMTest for NDArrayTest {
   fn init() -> NDArrayTest {
     NDArrayTest {
-      a: Array::random(SIZE, Uniform::new(0.0, 1.0)),
-      b: Array::random(SIZE, Uniform::new(0.0, 1.0)),
+      a: Array1::random(SIZE, Uniform::new(0.0, 1.0)),
+      b: Array1::random(SIZE, Uniform::new(0.0, 1.0)),
     }
   }
-  fn run(&self) -> f64 {
-    (&self.a + &self.b).sum()
+  fn run(&self) -> String {
+    (&self.a + &self.b).sum().to_string()
   }
 }

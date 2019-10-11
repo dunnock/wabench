@@ -1,2 +1,6 @@
 /target
+/web/target
+/web/pkg
+/web/node_modules
+/web/dist
 **/*.rs.bk

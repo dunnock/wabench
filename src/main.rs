@@ -1,5 +1,5 @@
 use wabench::ndarray_test::NDArrayTest;
-use wabench::wasmtest::WASMTest;
+use wabench::WASMTest;
 use std::time::{Instant};
 
 const RUNS: u128 = 100; //because we need to divide milliseconds later
