@@ -6,6 +6,7 @@ use super::runner;
 pub struct State {
   selected: Option<Tests>,
   running: Option<Tests>,
+  initialized: Option<Tests>,
   completed: Option<runner::TestResult>
 }
 
@@ -17,7 +18,7 @@ pub struct App {
 pub enum Msg {
   SelectTest(Tests),
   StartTest,
-  TestCompleted(runner::Response),
+  TestResult(runner::Response),
 }
 
 impl Component for App {
@@ -25,13 +26,14 @@ impl Component for App {
   type Properties = ();
 
   fn create(_: Self::Properties, mut link: ComponentLink<Self>) -> Self {
-    let callback = link.send_back(|res| Msg::TestCompleted(res));
+    let callback = link.send_back(|res| Msg::TestResult(res));
     // `bridge` spawns an instance if no one is available
     let runner = runner::TestRunner::bridge(callback); // Connected! :tada:
     App {
       state: State {
         running: None,
         selected: None,
+        initialized: None,
         completed: None
       },
       runner
@@ -48,9 +50,12 @@ impl Component for App {
           self.runner.send(runner::Request::RunTest(test.clone()));
         }
       },
-      Msg::TestCompleted(runner::Response::TestCompleted(result)) => {
+      Msg::TestResult(runner::Response::TestCompleted(result)) => {
         self.state.running = None;
         self.state.completed = Some(result);
+      },
+      Msg::TestResult(runner::Response::TestInitialized(test)) => {
+        self.state.initialized = Some(test);
       }
     };
     true
@@ -63,8 +68,15 @@ impl Renderable<App> for App {
       <div>
         <Select<Tests> options=Tests::list() onchange=|test| Msg::SelectTest(test) />
         <button onclick=|_| Msg::StartTest disabled=self.state.selected.is_none()>{ "start test"}</button>
+        <div>
         { if let Some(test) = &self.state.running { format!("Running test {}", test.to_string()) } else { "".to_string() } }
+        </div>
+        <div>
+        { if let Some(test) = &self.state.initialized { format!("Test {} data initialized", test.to_string()) } else { "".to_string() } }
+        </div>
+        <div>
         { if let Some(bench) = &self.state.completed { format!("Completed test {} with average time {}", bench.test.to_string(), bench.time) } else { "".to_string() } }
+        </div>
       </div>
     }
   }

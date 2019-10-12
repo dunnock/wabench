@@ -17,7 +17,11 @@ impl WASMTest for NDArrayTest {
       b: Array1::random(SIZE, Uniform::new(0.0, 1.0)),
     }
   }
-  fn run(&self) -> String {
-    (&self.a + &self.b).sum().to_string()
+  fn run(&self) {
+    (&self.a + &self.b).sum();
   }
+}
+
+impl NDArrayTest {
+  pub const NAME: &'static str = "ndarray";
 }

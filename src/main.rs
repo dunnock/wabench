@@ -1,16 +1,12 @@
-use wabench::ndarray_test::NDArrayTest;
+use wabench::tests::Tests;
 use wabench::WASMTest;
-use std::time::{Instant};
-
-const RUNS: u128 = 100; //because we need to divide milliseconds later
 
 fn main() {
-    let t1 = NDArrayTest::init();
-    // let b = Array::random(100_000_000, Uniform::new(0, 100));
-    let now = Instant::now();
-    for _i in 1..RUNS {
-        println!("{:?}", t1.run());
+    for test in Tests::list() {
+        let name = test.to_string();
+        println!("Starting {}", name);
+        let instance = test.init();
+        println!("{}: Initialized data", name);
+        println!("{}: Average per loop {}ms", name, (instance.benchmark() / 1_000_000) as f64 );
     }
-    let duration = now.elapsed();
-    println!("Average per loop {}", duration.as_millis()/(RUNS as u128) );
 }

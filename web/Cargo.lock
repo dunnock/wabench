@@ -537,8 +537,11 @@ name = "wabench-web"
 version = "0.1.0"
 dependencies = [
  "console_error_panic_hook 0.1.6 (registry+https://github.com/rust-lang/crates.io-index)",
+ "log 0.4.8 (registry+https://github.com/rust-lang/crates.io-index)",
  "serde 1.0.101 (registry+https://github.com/rust-lang/crates.io-index)",
  "wabench 0.1.0",
+ "wasm-bindgen 0.2.42 (registry+https://github.com/rust-lang/crates.io-index)",
+ "web_logger 0.2.0 (registry+https://github.com/rust-lang/crates.io-index)",
  "yew 0.9.0 (registry+https://github.com/rust-lang/crates.io-index)",
 ]
 
@@ -594,6 +597,16 @@ dependencies = [
 name = "wasm-bindgen-shared"
 version = "0.2.42"
 source = "registry+https://github.com/rust-lang/crates.io-index"
+
+[[package]]
+name = "web_logger"
+version = "0.2.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+dependencies = [
+ "log 0.4.8 (registry+https://github.com/rust-lang/crates.io-index)",
+ "stdweb 0.4.19 (registry+https://github.com/rust-lang/crates.io-index)",
+ "wasm-bindgen 0.2.42 (registry+https://github.com/rust-lang/crates.io-index)",
+]
 
 [[package]]
 name = "yew"
@@ -704,5 +717,6 @@ dependencies = [
 "checksum wasm-bindgen-macro 0.2.42 (registry+https://github.com/rust-lang/crates.io-index)" = "f914c94c2c5f4c9364510ca2429e59c92157ec89429243bcc245e983db990a71"
 "checksum wasm-bindgen-macro-support 0.2.42 (registry+https://github.com/rust-lang/crates.io-index)" = "9168c413491e4233db7b6884f09a43beb00c14d11d947ffd165242daa48a2385"
 "checksum wasm-bindgen-shared 0.2.42 (registry+https://github.com/rust-lang/crates.io-index)" = "326c32126e1a157b6ced7400061a84ac5b11182b2cda6edad7314eb3ae9ac9fe"
+"checksum web_logger 0.2.0 (registry+https://github.com/rust-lang/crates.io-index)" = "f50afec20c2e728ca33ffb77d1ed049c8559f1d2e59e0fea36f6586d5bc74683"
 "checksum yew 0.9.0 (registry+https://github.com/rust-lang/crates.io-index)" = "8557d79f121d1656cea897ab706b762a02634a3bb7ccecefe4b75b1733345ac4"
 "checksum yew-macro 0.9.0 (registry+https://github.com/rust-lang/crates.io-index)" = "2873ece0371425a2357c4f718a3d009972721d720ce342f7225e3baa5268d289"
