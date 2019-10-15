@@ -1,9 +1,10 @@
 #![recursion_limit="256"]
-mod app;
-mod runner;
+pub mod app;
+pub mod runner;
 mod utils;
 
 use wasm_bindgen::prelude::*;
+
 
 // This is the entry point for the web app
 #[wasm_bindgen]

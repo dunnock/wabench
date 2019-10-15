@@ -1,7 +1,7 @@
 pub mod ndarray_test;
 pub mod tests;
 
-use std::time::{Instant};
+use instant::{Instant};
 
 /// Trait for tests
 /// 

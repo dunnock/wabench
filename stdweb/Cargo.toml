@@ -1,0 +1,33 @@
+[package]
+authors = ["Maksym Vorobiov <maxim.vorobjov@gmail.com>"]
+edition = "2018"
+name = "wabench-web"
+version = "0.1.0"
+
+[[bin]]
+name = "main"
+path = "src/bin/main.rs"
+
+[[bin]]
+name = "worker"
+path = "src/bin/worker.rs"
+
+[dependencies]
+log = "0.4"
+web_logger = "0.2"
+yew = "0.9.0"
+
+[dependencies.serde]
+features = ["derive"]
+version = "1.0"
+
+[dependencies.wabench]
+path = ".."
+
+[dependencies.instant]
+version = "0.1"
+features = [ "stdweb" ]
+
+[dependencies.rand]
+version="0.7"
+features = [ "stdweb" ]

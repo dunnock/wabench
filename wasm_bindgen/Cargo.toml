@@ -9,6 +9,7 @@ crate-type = ["cdylib", "rlib"]
 
 [features]
 default = ["console_error_panic_hook"]
+threaded = []
 
 [dependencies]
 log = "0.4"
@@ -24,3 +25,10 @@ version = "1.0"
 [dependencies.wabench]
 path = ".."
 
+[dependencies.instant]
+version = "0.1"
+features = [ "wasm-bindgen" ]
+
+[dependencies.rand]
+version="0.7"
+features = [ "wasm-bindgen" ]

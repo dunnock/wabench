@@ -25,7 +25,7 @@ pub enum Msg {}
 #[derive(Serialize, Deserialize, Debug)]
 pub struct TestResult {
   pub test: Tests,
-  pub time: u128,
+  pub time: u64,
 }
 
 impl Agent for TestRunner {
@@ -34,7 +34,8 @@ impl Agent for TestRunner {
     // - `Context` (shared in the main thread)
     // - `Private` (one per bridge in a separate thread)
     // - `Public` (shared in a separate thread)
-    type Reach = Context; // Spawn only one instance on the main thread (all components can share this agent)
+    type Reach = Public; 
+    //type Reach = Context; // Spawn only one instance on the main thread (all components can share this agent)
     type Message = Msg;
     type Input = Request;
     type Output = Response;
@@ -53,9 +54,13 @@ impl Agent for TestRunner {
             Request::RunTest(test) => {
                 let instance = test.init();
                 self.link.response(who, Response::TestInitialized(test.clone()));
-                let time = instance.benchmark();
+                let time = instance.benchmark() as u64;
                 self.link.response(who, Response::TestCompleted(TestResult{ test, time }));
             },
         }
+    }
+
+    fn name_of_resource() -> &'static str {
+        "bin/worker.js"
     }
 }

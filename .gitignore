@@ -1,6 +1,7 @@
 /target
-/web/target
-/web/pkg
-/web/node_modules
-/web/dist
+/*/target
+/*/pkg
+/*/node_modules
+/*/dist
 **/*.rs.bk
+/.vscode
