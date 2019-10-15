@@ -34,8 +34,10 @@ impl Agent for TestRunner {
     // - `Context` (shared in the main thread)
     // - `Private` (one per bridge in a separate thread)
     // - `Public` (shared in a separate thread)
-    type Reach = Public; 
-    //type Reach = Context; // Spawn only one instance on the main thread (all components can share this agent)
+    #[cfg(feature="threaded")]
+    type Reach = Public; // Spawn service worker in separate thread
+    #[cfg(not(feature="threaded"))]
+    type Reach = Context; // Spawn only one instance on the main thread (all components can share this agent)
     type Message = Msg;
     type Input = Request;
     type Output = Response;
@@ -46,7 +48,7 @@ impl Agent for TestRunner {
     }
 
     // Handle inner messages (of services of `send_back` callbacks)
-    fn update(&mut self, msg: Self::Message) { /* ... */ }
+    fn update(&mut self, _msg: Self::Message) { /* ... */ }
 
     // Handle incoming messages from components of other agents.
     fn handle(&mut self, msg: Self::Input, who: HandlerId) {
@@ -60,6 +62,7 @@ impl Agent for TestRunner {
         }
     }
 
+    #[cfg(feature="threaded")]
     fn name_of_resource() -> &'static str {
         "bin/worker.js"
     }

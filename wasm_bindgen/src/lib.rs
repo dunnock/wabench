@@ -1,6 +1,6 @@
 #![recursion_limit="256"]
-pub mod app;
-pub mod runner;
+use wabench_web::app;
+use wabench_web::runner;
 mod utils;
 
 use wasm_bindgen::prelude::*;

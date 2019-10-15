@@ -75,7 +75,7 @@ impl Renderable<App> for App {
         { if let Some(test) = &self.state.initialized { format!("Test {} data initialized", test.to_string()) } else { "".to_string() } }
         </div>
         <div>
-        { if let Some(bench) = &self.state.completed { format!("Completed test {} with average time {}", bench.test.to_string(), bench.time) } else { "".to_string() } }
+        { if let Some(bench) = &self.state.completed { format!("Completed test {} with average time {}ns", bench.test.to_string(), bench.time) } else { "".to_string() } }
         </div>
       </div>
     }

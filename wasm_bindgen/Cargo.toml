@@ -1,15 +1,14 @@
 [package]
 authors = ["Maksym Vorobiov <maxim.vorobjov@gmail.com>"]
 edition = "2018"
-name = "wabench-web"
-version = "0.1.0"
+name = "wabench-app-wbg"
+version = "0.2.0"
 
 [lib]
 crate-type = ["cdylib", "rlib"]
 
 [features]
 default = ["console_error_panic_hook"]
-threaded = []
 
 [dependencies]
 log = "0.4"
@@ -18,12 +17,11 @@ yew = "0.9.0"
 wasm-bindgen = "=0.2.42"
 console_error_panic_hook = { version = "0.1.6", optional = true }
 
-[dependencies.serde]
-features = ["derive"]
-version = "1.0"
-
 [dependencies.wabench]
 path = ".."
+
+[dependencies.wabench-web]
+path = "../web"
 
 [dependencies.instant]
 version = "0.1"
