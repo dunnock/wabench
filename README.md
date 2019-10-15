@@ -30,11 +30,11 @@ Using stdweb stack to compile web application appeared to be the quite simple, i
 [ ] Why code compiled via wasm-bindgen and stdweb is 2 times slower than WASI?
 
 
-
 # Acknowledgements
 
-- wasmer.io
-- wavm
+- wasmer.io - it seems most powerful, interconnected and fast wasm runtime
+- wavm - it seems fastest wasm runtime
+- yew - elegant web framework, it was easy to build web app (except wasm-pack setup part)
 
 # Other benchmarks
 
