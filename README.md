@@ -14,10 +14,9 @@ Unoptimized dev build for all targets I've tried working 10+ times slower, so I 
 
 Building for wasm32-wasi target appeared to be fastest way to go, allowed to run benchmarks from console via `wasmer` and `wavm` and browser using `wasmer`. Those benchmarks displayed timings sometimes better than running optimized release build (probably due to memory reallocation in native version). 
 
-Using wasm-pack via webpack to compile web application appeared to be the most complicated setup, code resides under `wasm_bindgen` directory. Also I did not manage to setup service worker, since yew workers are natively built with cargo web, hence tests are blocking web page with this setup.
+Using wasm-pack via webpack to compile web application appeared to be the most complicated setup, code resides under `wasm_bindgen` directory. Also I did not manage to setup service worker, since yew workers are natively built with cargo web, hence tests are blocking web page with this setup. Timing appeared 2 times slower than of WASI. Though it seems gives you most control of JavaScript application setup.
 
-Using stdweb stack to compile web application appeared to be the quite simple, initial run time appeared to be 2 times slower than wasm32-wasi though.
-
+Using stdweb stack to compile web application appeared to be the quite simple, initial run time appeared to be 2 times slower than wasm32-wasi though, same as wasm-bindgen.
 
 # Wabench
 
@@ -28,8 +27,7 @@ Using stdweb stack to compile web application appeared to be the quite simple, i
 [X] Huge ndarray sum test
 [ ] Fibonacci
 [ ] Webapp in subdir web
-[ ] Why code compiled via wasm-bindgen is 1000 times slower than stdweb?
-[ ] Why code compiled via stdweb is 2 times slower than WASI?
+[ ] Why code compiled via wasm-bindgen and stdweb is 2 times slower than WASI?
 
 
 
