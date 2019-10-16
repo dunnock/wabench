@@ -1,14 +1,16 @@
-# Goal
+# Yet another WASM benchmark (WASI focused)
+
+## Goal
 
 Web3 performance benchmark for WASM. WASM benchmarks performed on user agents, all the statistic is open and shared for comparison. 
 
-# Problem statements
+## Problem statements
 
 There are many WebAssembly performance results published, though most of those performed on a limited set of devices owned by benchmark author, while web is truly heterogeneous, varying not only by hardware, browser, OS and versions, but also various random factors.
 
 Another problem is that many benchmarks actually WASM integration performance tests including whole WASM context and data initialization time. In this project we will focus on measuring pure WebAssembly code execution timings, not including context and data initialization.
 
-# Trial and error notes
+## Trial and error notes
 
 Unoptimized dev build for all targets I've tried working 10+ times slower, so I focused on release timings.
 
@@ -18,24 +20,19 @@ Using wasm-pack via webpack to compile web application appeared to be the most c
 
 Using stdweb stack to compile web application appeared to be the quite simple, with `Public` worker in separate thread as well as `Context` initial run time appeared to be 2 times slower than wasm32-wasi, same as wasm-bindgen.
 
-# Wabench
+## Plan
 
-# Plan
-
-[X] Local tests execution
-[X] Compile and run as WASI
-[X] Huge ndarray sum test
-[ ] Fibonacci
-[X] Webapp in subdir web
-[ ] Code compiled via wasm-bindgen or stdweb is 2 times slower than WASI - add yew WASI worker template
+- [X] Local tests execution
+- [X] Compile and run as WASI
+- [X] Huge ndarray sum test
+- [ ] Fibonacci
+- [X] Webapp in subdir web
+- [ ] Code compiled via wasm-bindgen or stdweb is 2 times slower than WASI - add yew WASI worker template
 
 
-# Acknowledgements
+## Acknowledgements
 
 - wasmer.io - it seems most powerful, interconnected and fast wasm runtime
 - wavm - it seems fastest wasm runtime
 - yew - elegant web framework, it was easy to build web app (except wasm-pack setup part)
 
-# Other benchmarks
-
- - 
