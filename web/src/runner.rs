@@ -11,14 +11,12 @@ pub struct TestRunner {
 pub enum Request {
   RunTest(Tests),
 }
-impl Transferable for Request {}
 
 #[derive(Serialize, Deserialize, Debug)]
 pub enum Response {
   TestCompleted(TestResult),
   TestInitialized(Tests),
 }
-impl Transferable for Response {}
 
 pub enum Msg {}
 

@@ -17,7 +17,7 @@ log = "0.4"
 web_logger = "0.2"
 
 [dependencies.yew]
-git = "https://github.com/dunnock/yew"
+path = "../../../opensource/yew"
 
 [dependencies.wabench-web]
 features = [ "threaded" ]

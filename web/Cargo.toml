@@ -16,7 +16,11 @@ name = "worker"
 path = "src/bin/worker.rs"
 
 [dependencies]
-yew = "0.9.0"
+stdweb = "0.4.20"
+
+[dependencies.yew]
+git = "https://github.com/dunnock/yew"
+#path = "../../../opensource/yew"
 
 [dependencies.serde]
 features = ["derive"]

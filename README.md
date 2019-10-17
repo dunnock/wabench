@@ -27,7 +27,7 @@ Using stdweb stack to compile web application appeared to be the quite simple, w
 - [X] Huge ndarray sum test
 - [ ] Fibonacci
 - [X] Webapp in subdir web
-- [ ] Code compiled via wasm-bindgen or stdweb is 2 times slower than WASI - add yew WASI worker template
+- [ ] Add WASI worker setup for yew to speed up
 
 
 ## Acknowledgements

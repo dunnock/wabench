@@ -1,6 +1,7 @@
 use wabench::tests::Tests;
-use yew::prelude::*;
+use yew::{html, Component, ComponentLink, Html, ShouldRender, Bridge};
 use yew::components::Select;
+use yew::agent::Bridged;
 use super::runner;
 
 pub struct State {
@@ -39,6 +40,7 @@ impl Component for App {
       runner
     }
   }
+
   fn update(&mut self, msg: Self::Message) -> ShouldRender {
     match msg {
       Msg::SelectTest(test) => {
@@ -60,9 +62,7 @@ impl Component for App {
     };
     true
   }
-}
 
-impl Renderable<App> for App {
   fn view(&self) -> Html<Self> {
     html! {
       <div>

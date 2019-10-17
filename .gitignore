@@ -3,5 +3,6 @@
 /*/pkg
 /*/node_modules
 /*/dist
+/wasi-worker/static/bin
 **/*.rs.bk
 /.vscode
