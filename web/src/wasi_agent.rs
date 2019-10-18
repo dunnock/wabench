@@ -3,22 +3,30 @@
     as a PoC for compilation purpose. */
 
 use yew::agent::{Agent, HandlerId, AgentScope, AgentLink, AgentUpdate, Responder, Public, FromWorker, ToWorker, Packed};
-#[allow(unused_imports)]
-use stdweb::{_js_impl, js};
-
+use std::fs;
+use std::io::{Read, Write};
 
 /// Implements rules to register a worker in a separate thread.
 pub trait ThreadedWASI {
     /// Executes an agent in the current environment.
     /// Uses in `main` function of a worker.
-    fn register();
+    fn run() -> std::io::Result<()>;
 }
 
+const OUTFILE: &'static str = "/output.bin";
+const INFILE: &'static str = "/input.bin";
+
+/*
+thread_local! {
+    static AGENTS_INBOX: RefCell<HashMap<TypeId, File>> = RefCell::new(HashMap::new());
+}*/
+
+#[cfg(target_os = "wasi")]
 impl<T> ThreadedWASI for T
 where
     T: Agent<Reach = Public>,
 {
-    fn register() {
+    fn run() -> std::io::Result<()> {
         let scope = AgentScope::<T>::new();
         let responder = WASIResponder {};
         let link = AgentLink::connect(&scope, responder);
@@ -42,37 +50,37 @@ where
                 ToWorker::Destroy => {
                     let upd = AgentUpdate::Destroy;
                     scope.send(upd);
-                    // TODO: replace with WASI kill
-                    js! {
-                        // Terminates web worker
-                        self.close();
-                    };
+                    std::process::exit(1);
                 }
             }
         };
         let loaded: FromWorker<T::Output> = FromWorker::WorkerLoaded;
         let loaded = loaded.pack();
-        // TODO: replace with file handle
-        js! {
-            var handler = @{handler};
-            self.onmessage = function(event) {
-                handler(event.data);
-            };
-            self.postMessage(@{loaded});
+        let mut output = fs::File::create(OUTFILE)?;
+        output.write_all(&loaded)?;
+        let mut input = fs::File::open(INFILE)?;
+        loop {
+            let mut buffer = [0; 1024];
+            input.read(&mut buffer);
+            println!("Worker got buf> {:?}", &buffer[0..31]);
+            handler(buffer.to_vec());
+            std::thread::sleep(std::time::Duration::new(0, 5000));
         };
+        // TODO: process input messages via file handle
+        Ok(())
     }
 }
 
 struct WASIResponder {}
 
+#[cfg(target_os = "wasi")]
 impl<AGN: Agent> Responder<AGN> for WASIResponder {
     fn response(&self, id: HandlerId, output: AGN::Output) {
         let msg = FromWorker::ProcessOutput(id, output);
         let data = msg.pack();
         // TODO: replace with file handle
-        js! {
-            var data = @{data};
-            self.postMessage(data);
-        };
+        let mut output = fs::OpenOptions::new().append(true).open(OUTFILE)
+            .expect("cannot open output file handle for appending");
+        output.write_all(&data).expect("cannot append output message");
     }
 }
