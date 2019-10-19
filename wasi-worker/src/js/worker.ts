@@ -60,9 +60,10 @@ const startWasiTask = async (file: string) => {
       wasi_unstable: wasi.wasiImport
     });
 
+    instance.exports.input(24);
+
     // Start the WebAssembly WASI instance!
     wasi.start(instance);
-
   } catch (e) {
     console.error(e);
     console.error(e.stack);

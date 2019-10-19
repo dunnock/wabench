@@ -1,6 +1,6 @@
 use wabench_web::wasi_agent::ThreadedWASI;
 
-fn main() {
+pub fn main() {
     //web_logger::init();
     //yew::initialize();
     if let Err(err) = wabench_web::runner::TestRunner::run() {
@@ -9,6 +9,6 @@ fn main() {
     //yew::run_loop();
 }
 
-fn input(arg: u32) {
+pub fn input(arg: u32) {
     println!("Input {}", arg);
 }
