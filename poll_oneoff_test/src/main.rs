@@ -16,9 +16,8 @@ fn debug_std_thread_sleep() {
         precision: 0,
         flags: 0,
     };
-
     let in_ = [wasi::Subscription {
-        userdata: 0, //Works with CLOCK_ID
+        userdata: 0, //Should be CLOCK_ID
         type_: wasi::EVENTTYPE_CLOCK,
         u: wasi::raw::__wasi_subscription_u { clock: clock },
     }];
