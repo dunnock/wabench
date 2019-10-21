@@ -74,9 +74,12 @@ impl<AGN: Agent> Responder<AGN> for WASIResponder {
         let msg = FromWorker::ProcessOutput(id, output);
         let data = msg.pack();
         // TODO: replace with file handle
-        let mut output = fs::OpenOptions::new().append(true).open(OUTFILE);
+        let mut output = fs::OpenOptions::new().write(true).append(true).open(OUTFILE);
         let res = match output {
-            Ok(mut file) => file.write_all(&data), //.expect("cannot append output message");
+            Ok(mut file) => {
+                println!("opened file {:?}", file);
+                file.write_all(&data) //.expect("cannot append output message");
+            }
             Err(msg) => { eprintln!("worker error opening file {}", msg); Err(msg) }
 
         };

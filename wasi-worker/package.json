@@ -38,6 +38,7 @@
   },
   "devDependencies": {
     "@ampproject/rollup-plugin-closure-compiler": "^0.10.0",
+    "@types/node": "^12.11.2",
     "install": "^0.13.0",
     "memfs": "^2.15.5",
     "npm": "^6.12.0",

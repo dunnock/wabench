@@ -1,8 +1,6 @@
-import { IFs } from "memfs";
 import WASI from "../../../../wasmer-js/packages/wasi";
-import WasmFs from "../../../../wasmer-js/packages/wasmfs";
 import wasmTransformerInit, {lowerI64Imports} from "@wasmer/wasm-transformer";
-import { BufferedStdin } from './stdin';
+import { WorkerFS } from './fs';
 
 declare var self: Worker;
 
@@ -12,11 +10,7 @@ const workerUrl = "worker.wasm"; //"wabench_app_wasi.wasm"; //
 let iamWorker = self;
 let instance: any = null;
 
-// Instantiate a new WASI Instance
-const wasmFs = new WasmFs();
-
-let outgoingFd = wasmFs.fs.openSync("/output.bin", "w+");
-let incomingFd = wasmFs.fs.openSync("/dev/stdin", "r"); //.openSync("/input.bin", "w+");
+const workerFs = new WorkerFS();
 
 let wasi = new WASI({
   preopenDirectories: {
@@ -26,10 +20,9 @@ let wasi = new WASI({
   env: {},
   bindings: {
     ...WASI.defaultBindings,
-    fs: wasmFs.fs
+    fs: workerFs.getFs()
   }
 });
-let stdin = new BufferedStdin();
 
 
 const fetchAndTransformWasmBinary = async (url: string) => {
@@ -56,9 +49,6 @@ const startWasiTask = async (file: string) => {
     const module = await fetchAndTransformWasmBinary(file);
     console.log("Module transformed and compiled, starting...");
 
-    console.log("Setting up filesystem");
-    setupFileSystemHandlers(wasmFs.fs);
-
     // Instantiate the WebAssembly file
     instance = await WebAssembly.instantiate(module, {
       wasi_unstable: wasi.wasiImport
@@ -66,6 +56,10 @@ const startWasiTask = async (file: string) => {
 
     // Start the WebAssembly WASI instance!
     wasi.start(instance);
+    console.log("started");
+
+    // @ts-ignore
+    //workerFs.stdout.fd.write(Uint8Array.from([1,2,3]));
 
     //stdin.push(Uint8Array.from([1,2,3,4,5,6]));
     //console.log(instance.exports.same(124));
@@ -76,29 +70,18 @@ const startWasiTask = async (file: string) => {
   }
 };
 
-function setupFileSystemHandlers(fs: IFs) {
-  // Output what's inside of /dev/stdout!
-  fs.createReadStream("/dev/stdout")
-    .on('data', (chunk) => {
-      console.log(`Worker> ${chunk}`);
-    });
-  fs.createReadStream("/dev/stderr")
-    .on('data', (chunk) => {
-      console.error(`Worker Error> ${chunk}`);
-    });
-  fs.createReadStream("", {fd: outgoingFd})
-    .on('data', (chunk) => {
-      console.log(`Worker Outgoing Data> ${chunk}`);
-      if(typeof iamWorker.postMessage === 'function')
-        iamWorker.postMessage(Array.from(chunk));
-    });
-  stdin.bindToFd(wasmFs.volume.fds[0]);
-}
+
+workerFs.output.mapBinFn((buffer: Uint8Array) => {
+  console.log("Worker Outgoing Data> " + buffer);
+  if (typeof iamWorker.postMessage === "function") {
+    iamWorker.postMessage(Array.from(buffer));
+  }
+})
 
 iamWorker.onmessage = function(event) {
   console.log(event.data);
   console.log(`Worker Incoming Data> ${event.data}`);
-  stdin.push(event.data);
+  workerFs.stdin.push(event.data);
   console.log(instance.exports.message_ready());
 };
 
