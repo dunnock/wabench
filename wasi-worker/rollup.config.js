@@ -26,17 +26,14 @@ const plugins = [
   copy({ //TODO: copy all required packages into destination folder
     targets: [
       { src: 'node_modules/@wasmer/wasm-transformer/wasm_transformer_bg.wasm', dest: 'static/bin' },
-      { src: 'target/wasm32-wasi/release/worker.wasm', dest: 'static/bin' },
+      { src: `target/wasm32-wasi/${process.env.PROD ? "release" : "debug"}/worker.wasm`, dest: 'static/bin' },
     ]
   }),
   // just for debugging of @wasmer/wasi
   typescript(typescriptPluginOptions),
-//  commonjs(),
-//  globals(),
-//  builtins(),
   json(),
-  process.env.PROD ? compiler() : undefined,
-  process.env.PROD ? bundleSize() : undefined
+  //process.env.PROD ? compiler() : undefined,
+  //process.env.PROD ? bundleSize() : undefined
 ];
 
 const workerBundles = [

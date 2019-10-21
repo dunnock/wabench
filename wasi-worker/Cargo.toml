@@ -1,8 +1,11 @@
 [package]
 authors = ["Maksym Vorobiov <maxim.vorobjov@gmail.com>"]
 edition = "2018"
-name = "wabench-app-stdweb"
+name = "wabench-app-wasi"
 version = "0.2.0"
+
+#[lib]
+#crate-type = ["cdylib", "rlib"]
 
 [[bin]]
 name = "main"

@@ -546,7 +546,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "wabench-app-stdweb"
+name = "wabench-app-wasi"
 version = "0.2.0"
 dependencies = [
  "log 0.4.8 (registry+https://github.com/rust-lang/crates.io-index)",
@@ -559,8 +559,11 @@ dependencies = [
 name = "wabench-web"
 version = "0.1.0"
 dependencies = [
+ "log 0.4.8 (registry+https://github.com/rust-lang/crates.io-index)",
  "serde 1.0.101 (registry+https://github.com/rust-lang/crates.io-index)",
  "wabench 0.1.0",
+ "wasi 0.7.0 (registry+https://github.com/rust-lang/crates.io-index)",
+ "web_logger 0.2.0 (registry+https://github.com/rust-lang/crates.io-index)",
  "yew 0.10.0",
 ]
 
