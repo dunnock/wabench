@@ -20,6 +20,12 @@ Using wasm-pack via webpack to compile web application appeared to be the most c
 
 Using stdweb stack to compile web application appeared to be the quite simple, with `Public` worker in separate thread as well as `Context` initial run time appeared to be 2 times slower than wasm32-wasi, same as wasm-bindgen.
 
+Setting up WASI service worker appered to be the most challenging, primarily from the point of providing communication of binary data between worker and web page: 
+ - polling API is not quite ready yet, thread:sleep is not implemented on some VMs and does not actually return control to JS engine, file polling is not implemented in JS at the moment. Hence implementing event loop is not feasible
+  - I did not figure out how to pass arrays as function parameters
+  Most feasible option appeared to be establishing communication via filesystem (thanks to @wasmer/wasmFm and @wasmer/terminal for beautiful idea)
+
+
 ## Plan
 
 - [X] Local tests execution
@@ -27,12 +33,13 @@ Using stdweb stack to compile web application appeared to be the quite simple, w
 - [X] Huge ndarray sum test
 - [ ] Fibonacci
 - [X] Webapp in subdir web
-- [ ] Add WASI worker setup for yew to speed up
+- [X] Add WASI worker setup for yew to speed up
+- [ ] Fix bug of running second test: BufferedStdin read on position not supported: 21
+- [ ] Split out workers as separate setup
 
 
 ## Acknowledgements
 
-- wasmer.io - it seems most powerful, interconnected and fast wasm runtime
+- wasmer.io - it seems most powerful, interconnected and quite fast wasm runtime
 - wavm - it seems fastest wasm runtime
 - yew - elegant web framework, it was easy to build web app (except wasm-pack setup part)
-

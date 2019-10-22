@@ -28,7 +28,6 @@ pub extern "C" fn message_ready() -> usize {
     let message_size = io::stdin().read(&mut buf);
     if let Ok(len) = &message_size {
         let message = buf[0..*len].to_vec();
-        println!("worker got message> {:?}", &message);
         AGENT_SCOPE.with(|local| {
             if let Some(scope) = &*local.borrow() {
                 wabench_web::runner::TestRunner::handler(&scope, message)
@@ -36,7 +35,7 @@ pub extern "C" fn message_ready() -> usize {
         });
         return *len;
     } else {
-        eprintln!("worker error> {:?}", message_size);
+        eprintln!("Worker error> {:?}", message_size);
         return 0;
     }
 }

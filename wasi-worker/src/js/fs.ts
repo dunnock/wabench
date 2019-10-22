@@ -15,18 +15,14 @@ export class WorkerFS {
     this.wasmFs = new WasmFs();
 
     this.stdin = new BufferedStdin();
-    // @ts-ignore
     this.stdin.bindToFd(this.wasmFs.volume.fds[0]);
     
-    // @ts-ignore
     this.stdout = new PipedWriter(this.wasmFs.volume.fds[1]);
     
-    // @ts-ignore
     this.stderr = new PipedWriter(this.wasmFs.volume.fds[2]);
     this.stderr.mapStrFn((str) => console.error("worker error>" + str))
 
     let outgoingFd = this.wasmFs.fs.openSync("/output.bin", "w+");
-    // @ts-ignore
     this.output = new PipedWriter(this.wasmFs.volume.fds[outgoingFd]);
     // @ts-ignore
     //console.log(this.wasmFs.volume.getFileByFd(outgoingFd));
@@ -113,7 +109,7 @@ class BufferedStdin {
     if (message && message.length < length) {
       stdinBuffer.set(message);
     } else if (message) {
-      this.error("BufferedStdin read on position not supported: " + position)
+      this.error("Message does not fit passed stdin.read buffer: " + message.length)
     } else {
       return 0;
     }

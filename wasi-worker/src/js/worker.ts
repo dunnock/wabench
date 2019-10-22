@@ -56,7 +56,7 @@ const startWasiTask = async (file: string) => {
 
     // Start the WebAssembly WASI instance!
     wasi.start(instance);
-    console.log("started");
+    console.log("worker has started");
 
     // @ts-ignore
     //workerFs.stdout.fd.write(Uint8Array.from([1,2,3]));
@@ -72,15 +72,14 @@ const startWasiTask = async (file: string) => {
 
 
 workerFs.output.mapBinFn((buffer: Uint8Array) => {
-  console.log("Worker Outgoing Data> " + buffer);
+  console.log("Worker outgoing> " + buffer);
   if (typeof iamWorker.postMessage === "function") {
     iamWorker.postMessage(Array.from(buffer));
   }
 })
 
 iamWorker.onmessage = function(event) {
-  console.log(event.data);
-  console.log(`Worker Incoming Data> ${event.data}`);
+  console.log("Worker incoming> "+ event.data);
   workerFs.stdin.push(event.data);
   console.log(instance.exports.message_ready());
 };
