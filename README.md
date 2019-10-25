@@ -35,7 +35,7 @@ Setting up WASI service worker appered to be the most challenging, primarily fro
 - [X] Webapp in subdir web
 - [X] Add WASI worker setup for yew to speed up
 - [ ] Fix bug of running second test: BufferedStdin read on position not supported: 21
-- [ ] Split out workers as separate setup
+- [ ] Setup build.rs: split crates for stdweb and wasi workers, app, deployment/styles
 
 
 ## Acknowledgements
