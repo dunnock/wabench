@@ -40,6 +40,7 @@ Setting up WASI service worker appered to be the most challenging, primarily fro
 
 ## Acknowledgements
 
-- wasmer.io - it seems most powerful, interconnected and quite fast wasm runtime
+- cranestation and wasmtime - leading standard and implementation, wasmtime wider wasm support
+- wasmer.io - easy to use and quite fast wasm runtime
 - wavm - it seems fastest wasm runtime
 - yew - elegant web framework, it was easy to build web app (except wasm-pack setup part)
