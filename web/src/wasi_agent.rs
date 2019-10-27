@@ -19,11 +19,6 @@ pub trait ThreadedWASI<T: Agent> {
 
 const OUTFILE: &'static str = "/output.bin";
 
-/*
-thread_local! {
-    static AGENTS_INBOX: RefCell<HashMap<TypeId, File>> = RefCell::new(HashMap::new());
-}*/
-
 impl<T> ThreadedWASI<T> for T
 where
     T: Agent<Reach = Public>,

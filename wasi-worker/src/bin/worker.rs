@@ -10,16 +10,13 @@ thread_local! {
 }
 
 fn main() {
-    //web_logger::init();
-    //yew::initialize();
     match wabench_web::runner::TestRunner::run() {
         Ok(scope) => {AGENT_SCOPE.with(|local| local.replace(Some(scope)));},
         Err(err) => {println!("Failed to register agent {}", err);}
     }
     if let Err(err) = wabench_web::runner::TestRunner::run() {
         println!("Failed to register agent {}", err);
-    };
-    //yew::run_loop();
+    }
 }
 
 #[no_mangle]
