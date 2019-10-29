@@ -3,7 +3,7 @@ use wabench_web::runner::TestRunner;
 use std::thread_local;
 use std::cell::RefCell;
 use std::borrow::{Borrow, BorrowMut};
-use std::io::{self, Read, Write};
+use std::io::{self, Read};
 
 thread_local! {
     static AGENT_SCOPE: RefCell<Option<AgentScope<TestRunner>>> = RefCell::new(None);
@@ -13,9 +13,6 @@ fn main() {
     match wabench_web::runner::TestRunner::run() {
         Ok(scope) => {AGENT_SCOPE.with(|local| local.replace(Some(scope)));},
         Err(err) => {println!("Failed to register agent {}", err);}
-    }
-    if let Err(err) = wabench_web::runner::TestRunner::run() {
-        println!("Failed to register agent {}", err);
     }
 }
 
