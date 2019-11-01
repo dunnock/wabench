@@ -1,0 +1,23 @@
+[package]
+authors = ["Maksym Vorobiov <maxim.vorobjov@gmail.com>"]
+edition = "2018"
+name = "wabench-web"
+version = "0.1.0"
+
+[lib]
+crate-type = ["cdylib", "rlib"]
+
+[features]
+threaded = []
+
+[dependencies]
+wasi-worker-yew = "0.3"
+yew = "0.10"
+log = "0.4"
+web_logger = "0.2"
+wabench = { path = "../..", version="0.1" }
+
+[dependencies.serde]
+features = ["derive"]
+version = "1.0"
+

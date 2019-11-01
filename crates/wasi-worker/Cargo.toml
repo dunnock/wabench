@@ -1,0 +1,28 @@
+[package]
+authors = ["Maksym Vorobiov <maxim.vorobjov@gmail.com>"]
+edition = "2018"
+name = "wabench-app-wasi"
+version = "0.2.0"
+
+#[lib]
+#crate-type = ["cdylib", "rlib"]
+
+[[bin]]
+name = "main"
+path = "src/bin/main.rs"
+
+[[bin]]
+name = "worker"
+path = "src/bin/worker.rs"
+
+[dependencies]
+log = "0.4"
+web_logger = "0.2"
+
+[dependencies.yew]
+# git = "https://github.com/dunnock/yew"
+path = "../../../opensource/yew"
+
+[dependencies.wabench-web]
+features = [ "threaded" ]
+path = "../web"
