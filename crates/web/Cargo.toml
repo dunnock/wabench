@@ -11,7 +11,7 @@ crate-type = ["cdylib", "rlib"]
 threaded = []
 
 [dependencies]
-wasi-worker-yew = "0.3"
+wasi-worker = "0.3"
 yew = "0.10"
 log = "0.4"
 web_logger = "0.2"

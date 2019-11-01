@@ -18,10 +18,7 @@ path = "src/bin/worker.rs"
 [dependencies]
 log = "0.4"
 web_logger = "0.2"
-
-[dependencies.yew]
-# git = "https://github.com/dunnock/yew"
-path = "../../../opensource/yew"
+yew = "0.10"
 
 [dependencies.wabench-web]
 features = [ "threaded" ]
