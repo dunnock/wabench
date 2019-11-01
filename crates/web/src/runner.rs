@@ -1,5 +1,5 @@
 use serde::{Serialize, Deserialize};
-use wasi_worker::*;
+use wasi_worker_yew::*;
 use wabench::{tests::Tests, WASMTest};
 
 
@@ -30,7 +30,7 @@ impl Agent for TestRunner {
     #[cfg(feature="threaded")]
     type Reach = Public; // Spawn service worker in separate thread
     #[cfg(not(feature="threaded"))]
-    type Reach = Context; // Spawn only one instance on the main thread (all components can share this agent)
+    type Reach = yew::agent::Context; // Spawn only one instance on the main thread (all components can share this agent)
     type Message = Msg;
     type Input = Request;
     type Output = Response;
