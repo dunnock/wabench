@@ -1,0 +1,8 @@
+/target
+/pkg
+/node_modules
+/dist
+/static/bin
+Cargo.lock
+**/*.rs.bk
+/.vscode

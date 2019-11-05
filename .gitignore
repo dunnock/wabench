@@ -3,7 +3,7 @@
 /crates/*/pkg
 /crates/*/node_modules
 /crates/*/dist
-/crates//wasi-worker/static/bin
+/crates/wasi-worker/static/bin
 **/*.rs.bk
 /.vscode
 Cargo.lock

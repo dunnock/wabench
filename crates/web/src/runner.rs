@@ -3,7 +3,7 @@ use wasi_worker_yew::*;
 use wabench::{tests::Tests, WASMTest};
 
 
-pub struct TestRunner {
+pub struct TestRunner{
   link: AgentLink<TestRunner>,
 }
 
@@ -26,11 +26,8 @@ pub struct TestResult {
   pub time: u64,
 }
 
-impl Agent for TestRunner {
-    #[cfg(feature="threaded")]
-    type Reach = Public; // Spawn service worker in separate thread
-    #[cfg(not(feature="threaded"))]
-    type Reach = yew::agent::Context; // Spawn only one instance on the main thread (all components can share this agent)
+impl<R: yew::agent::Discoverer> Agent for TestRunner {
+    type Reach = R;
     type Message = Msg;
     type Input = Request;
     type Output = Response;
@@ -57,6 +54,6 @@ impl Agent for TestRunner {
 
     #[cfg(feature="threaded")]
     fn name_of_resource() -> &'static str {
-        "bin/worker.js"
+        "bin/worker.wasm"
     }
 }
