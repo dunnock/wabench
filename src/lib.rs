@@ -1,6 +1,9 @@
 pub mod ndarray_test;
 pub mod tests;
 
+#[cfg(not(target_os="unknown"))]
+use std::time::Instant;
+#[cfg(target_os="unknown")]
 use instant::{Instant};
 
 /// Trait for tests

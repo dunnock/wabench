@@ -1,37 +1,22 @@
 use wasi_worker_yew::*;
-use wabench_web::runner::TestRunner;
+use wabench_web::runner::{TestRunner, WasiWorker};
+
+// This is WASI specific implementation, which will not work under regular shell
 
 fn main() {
   // In WASI setup output will go to /output.bin
-  #[cfg(target_os="wasi")]
+  // It will not work when instantiated from shell though!
   let opt = ServiceOptions::default();
-  // In user filesystem we operate under current dir
-  #[cfg(not(target_os="wasi"))]
-  let opt = ServiceOptions { 
-    output: FileOptions::File("./testdata/output.bin".to_string()) 
-  };
-  let output_file = match &opt.output { 
-    FileOptions::File(path) => path.clone() 
-  };
   ServiceWorker::initialize(opt)
     .expect("ServiceWorker::initialize");
 
   // Following will create and initialize Agent
-  let agent = WASIAgent::<TestRunner>::new();
+  let agent = WASIAgent::<TestRunner<WasiWorker>>::new();
   // It will run ThreadedWASI::run() to start Agent in WASI compatible context
   agent.run().expect("Agent run");
 
   // Attach Agent to ServiceWorker as message handler singleton
   ServiceWorker::set_message_handler(Box::new(agent));
-
-  // Send binary message to main browser application
-  // this requires JS glue see wasi-worker-cli
-  ServiceWorker::post_message(b"message")
-    .expect("ServiceWorker::post_message");
-
-  // It does not autodelete output file
-  std::fs::remove_file(output_file)
-    .expect("Remove output.bin");
 }
 
 // this function will be called from worker.js when it receives message
