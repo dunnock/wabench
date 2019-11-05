@@ -22,4 +22,4 @@ yew = "0.10"
 
 [dependencies.wabench-web]
 features = [ "threaded" ]
-path = "../web"
+path = '../../crates/web'

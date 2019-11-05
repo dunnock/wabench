@@ -1,5 +1,8 @@
-use serde::{Serialize, Deserialize};
+#[cfg(target_os="wasi")]
 use wasi_worker_yew::*;
+#[cfg(not(target_os="wasi"))]
+use yew::agent::*;
+use serde::{Serialize, Deserialize};
 use wabench::{tests::Tests, WASMTest};
 
 
@@ -26,8 +29,11 @@ pub struct TestResult {
   pub time: u64,
 }
 
-impl<R: yew::agent::Discoverer> Agent for TestRunner {
-    type Reach = R;
+impl Agent for TestRunner {
+//    #[cfg(any(target_os="wasi",threaded))]
+    type Reach = Public;
+//    #[cfg(not(any(target_os="wasi",threaded)))]
+//    type Reach = yew::agent::Context;
     type Message = Msg;
     type Input = Request;
     type Output = Response;
@@ -52,8 +58,13 @@ impl<R: yew::agent::Discoverer> Agent for TestRunner {
         }
     }
 
-    #[cfg(feature="threaded")]
+    #[cfg(target_os="wasi")]
     fn name_of_resource() -> &'static str {
-        "bin/worker.wasm"
+        "wasi/worker.js"
+    }
+
+    #[cfg(not(target_os="wasi"))]
+    fn name_of_resource() -> &'static str {
+        "stdweb/stdweb-worker.js"
     }
 }
