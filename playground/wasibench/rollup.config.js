@@ -25,8 +25,8 @@ const plugins = [
   }),
   copy({ //TODO: copy all required packages into destination folder
     targets: [
-      { src: 'node_modules/@wasmer/wasm-transformer/wasm_transformer_bg.wasm', dest: 'static/bin' },
-      { src: `target/wasm32-wasi/${process.env.PROD ? "release" : "debug"}/worker.wasm`, dest: 'static/bin' },
+//      { src: 'node_modules/@wasmer/wasm-transformer/wasm_transformer_bg.wasm', dest: 'static/wasi' },
+      { src: `target/wasm32-wasi/${process.env.PROD ? "release" : "debug"}/worker.wasm`, dest: 'static/wasi' },
     ]
   }),
   // just for debugging of @wasmer/wasi
@@ -41,7 +41,7 @@ const workerBundles = [
     input: "./src/js/worker.ts",
     output: [
       {
-        file: "static/bin/worker.js",
+        file: "static/wasi/worker.js",
         format: "iife",
         sourcemap: sourcemapOption,
         name: "Process"

@@ -2,7 +2,7 @@
 /pkg
 /node_modules
 /dist
-/static/bin
+/static/wasi
 Cargo.lock
 **/*.rs.bk
 /.vscode

@@ -53,10 +53,7 @@ pub struct TestResult {
 }
 
 impl<L: 'static+Location> agent::Agent for TestRunner<L> {
-//    #[cfg(any(target_os="wasi",threaded))]
     type Reach = L::Reach;
-//    #[cfg(not(any(target_os="wasi",threaded)))]
-//    type Reach = yew::agent::Context;
     type Message = String;
     type Input = Request;
     type Output = Response;
@@ -82,6 +79,6 @@ impl<L: 'static+Location> agent::Agent for TestRunner<L> {
     }
 
     fn name_of_resource() -> &'static str {
-        L::url() // "wasi/worker.js"
+        L::url()
     }
 }

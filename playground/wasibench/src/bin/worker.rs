@@ -1,35 +1,28 @@
-use wabench_web::wasi_agent::{ThreadedWASI, AgentScope};
-use wabench_web::runner::TestRunner;
-use std::thread_local;
-use std::cell::RefCell;
-use std::borrow::{Borrow, BorrowMut};
-use std::io::{self, Read};
+use wasi_worker_yew::*;
+use wabench_web::runner::{TestRunner, WasiWorker};
 
-thread_local! {
-    static AGENT_SCOPE: RefCell<Option<AgentScope<TestRunner>>> = RefCell::new(None);
-}
 
 fn main() {
-    match wabench_web::runner::TestRunner::run() {
-        Ok(scope) => {AGENT_SCOPE.with(|local| local.replace(Some(scope)));},
-        Err(err) => {println!("Failed to register agent {}", err);}
-    }
+  // In WASI setup output will go to /output.bin
+  // It will not work when instantiated from shell though!
+  let opt = ServiceOptions::default();
+  ServiceWorker::initialize(opt)
+    .expect("ServiceWorker::initialize");
+
+  // Following will create and initialize Agent
+  let agent = WASIAgent::<TestRunner<WasiWorker>>::new();
+  // It will run ThreadedWASI::run() to start Agent in WASI compatible context
+  agent.run().expect("Agent run");
+
+  // Attach Agent to ServiceWorker as message handler singleton
+  ServiceWorker::set_message_handler(Box::new(agent));
 }
 
+// this function will be called from worker.js when it receives message
+// In the future it will be substituted by poll_oneoff or thread::yield, 
+// though currently poll_oneoff does not return control to browser
 #[no_mangle]
 pub extern "C" fn message_ready() -> usize {
-    let mut buf: [u8; 1000] = [0; 1000];
-    let message_size = io::stdin().read(&mut buf);
-    if let Ok(len) = &message_size {
-        let message = buf[0..*len].to_vec();
-        AGENT_SCOPE.with(|local| {
-            if let Some(scope) = &*local.borrow() {
-                wabench_web::runner::TestRunner::handler(&scope, message)
-            }
-        });
-        return *len;
-    } else {
-        eprintln!("Worker error> {:?}", message_size);
-        return 0;
-    }
+  ServiceWorker::on_message()
+    .expect("ServiceWorker.on_message")
 }

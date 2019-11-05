@@ -19,7 +19,7 @@ path = "src/bin/worker.rs"
 log = "0.4"
 web_logger = "0.2"
 yew = "0.10"
+wasi-worker-yew = { version="0.3", path = "../../../wasi-worker/crates/wasi-worker-yew" }
 
 [dependencies.wabench-web]
-features = [ "threaded" ]
 path = '../../crates/web'

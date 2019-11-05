@@ -6,8 +6,8 @@
   "scripts": {
     "test": "echo \"no tests yet\"",
     "build": "npm run build:prod",
-    "build:worker:prod": "cargo build --release --bin worker --target wasm32-wasi",
-    "build:worker": "cargo build --bin worker --target wasm32-wasi",
+    "build:worker:prod": "cargo build --release --bin worker --target wasm32-wasi --target-dir=target",
+    "build:worker": "cargo build --bin worker --target wasm32-wasi --target-dir=target",
     "build:prod": "npm run build:worker:prod; npx rollup -c --environment PROD",
     "build:dev": "npm run build:worker; npx rollup -c"
   },
@@ -32,9 +32,9 @@
   },
   "homepage": "https://github.com/dunnock/wabench#readme",
   "dependencies": {
-    "@wasmer/wasi": "^0.2.0",
-    "@wasmer/wasm-transformer": "^0.2.0",
-    "@wasmer/wasmfs": "^0.2.0"
+    "@wasmer/wasi": "^0.4.0",
+    "@wasmer/wasm-transformer": "^0.4.0",
+    "@wasmer/wasmfs": "^0.4.0"
   },
   "devDependencies": {
     "@ampproject/rollup-plugin-closure-compiler": "^0.10.0",

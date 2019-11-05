@@ -5,7 +5,7 @@ name = "wabench"
 version = "0.1.0"
 
 [workspace]
-members = ["crates/*"]
+members = ["crates/*", "playground/wasibench"]
 
 [dependencies]
 ndarray = "0.13.0"

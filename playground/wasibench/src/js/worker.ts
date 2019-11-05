@@ -1,5 +1,5 @@
-import WASI from "../../../../wasmer-js/packages/wasi";
-import wasmTransformerInit, {lowerI64Imports} from "@wasmer/wasm-transformer";
+import WASI from "@wasmer/wasi";
+import { lowerI64Imports } from "@wasmer/wasm-transformer";
 import { WorkerFS } from './fs';
 
 declare var self: Worker;
@@ -32,11 +32,11 @@ const fetchAndTransformWasmBinary = async (url: string) => {
   const originalWasmBinary = new Uint8Array(originalWasmBinaryBuffer);
 
   // Initialize our wasm-transformer
-  await wasmTransformerInit(wasmTransformerUrl); 
+  //await wasmTransformerInit(wasmTransformerUrl); 
   // IMPORTANT: This URL points to wherever the wasm-transformer.wasm is hosted
 
   // Transform the binary, by running the lower_i64_imports from the wasm-transformer
-  const transformedBinary =  lowerI64Imports(originalWasmBinary);
+  const transformedBinary = await lowerI64Imports(originalWasmBinary);
 
   // Compile the transformed binary
   const transformedWasmModule = await WebAssembly.compile(transformedBinary);
