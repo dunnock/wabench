@@ -17,10 +17,6 @@ serde = { version = "1.0", features = ["derive"] }
 yew = { git = "https://github.com/yewstack/yew" }
 wasi-worker-yew = { path="../wasi-worker/crates/wasi-worker-yew" }
 
-[target.wasm32-unknown-unknown.dependencies.instant]
-version = "0.1"
-features = ["now", "stdweb"]
-
-[target.wasm32-unknown-unknown.dependencies.rand]
-version = "0.7"
-features = ["stdweb"]
+[target.'cfg(cargo_web)'.dependencies]
+instant = { version = "0.1", features = ["now", "stdweb"] }
+rand = { version = "0.7", features = ["stdweb"] }

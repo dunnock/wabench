@@ -1,8 +1,8 @@
 use wabench::tests::Tests;
-use yew::{html, Component, ComponentLink, Html, ShouldRender, Bridge};
+use yew::{html, Component, ComponentLink, Html, ShouldRender};
 use yew::components::Select;
-use yew::agent::Bridged;
-use super::runner::*;
+use super::{runner::RunnerImpl, Request, Response, TestResult};
+use super::runners::*;
 
 pub struct State {
   selected: Option<Tests>,
@@ -10,60 +10,6 @@ pub struct State {
   initialized: Option<Tests>,
   completed: Option<TestResult>,
   runner: RunnerImpl
-}
-
-#[derive(Debug, Clone, PartialEq)]
-pub enum RunnerImpl {
-  Wasi,
-  Stdweb,
-  Embedded
-}
-
-impl RunnerImpl {
-  const RUNNERS: [Self; 3] = [Self::Wasi, Self::Stdweb, Self::Embedded];
-  /// Return list of available tests enum
-  pub fn list() -> Vec<Self> {
-    Self::RUNNERS.to_vec()
-  }
-}
-
-impl ToString for RunnerImpl {
-  fn to_string(&self) -> String {
-      match self {
-        RunnerImpl::Wasi => "wasi worker (separate thread)".to_string(),
-        RunnerImpl::Stdweb => "stdweb worker (separate thread)".to_string(),
-        RunnerImpl::Embedded => "embedded (same thread)".to_string(),
-     }
-   }
-}
-
-
-
-struct Runners {
-  wasi: Box<dyn Bridge<TestRunner<WasiWorker>>>,
-  stdweb: Box<dyn Bridge<TestRunner<StdwebWorker>>>,
-  embedded: Box<dyn Bridge<TestRunner<EmbeddedWorker>>>,
-}
-
-impl Runners {
-  fn init(mut link: ComponentLink<App>) -> Self {
-    let callback_wasi = link.send_back(|res| Msg::TestResult(res));
-    let callback_stdweb = link.send_back(|res| Msg::TestResult(res));
-    let callback_embedded = link.send_back(|res| Msg::TestResult(res));
-    // spawns an instance of each runner
-    Self {
-      wasi: TestRunner::<WasiWorker>::bridge(callback_wasi),
-      stdweb: TestRunner::<StdwebWorker>::bridge(callback_stdweb),
-      embedded: TestRunner::<EmbeddedWorker>::bridge(callback_embedded)
-    }
-  }
-  fn send(&mut self, kind: &RunnerImpl, request: Request) {
-    match kind {
-      RunnerImpl::Wasi => self.wasi.send(request),
-      RunnerImpl::Stdweb => self.stdweb.send(request),
-      RunnerImpl::Embedded => self.embedded.send(request),
-    }
-  }
 }
 
 pub struct App {

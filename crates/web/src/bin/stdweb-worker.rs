@@ -1,9 +1,9 @@
 use yew::agent::Threaded;
-use wabench_web::runner;
+use wabench_web::{runner::TestRunner, StdwebWorker};
 
 fn main() {
     web_logger::init();
     yew::initialize();
-    runner::TestRunner::<runner::StdwebWorker>::register();
+    TestRunner::<StdwebWorker>::register();
     yew::run_loop();
 }

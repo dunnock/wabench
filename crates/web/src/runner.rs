@@ -1,56 +1,36 @@
 use yew::agent;
-use serde::{Serialize, Deserialize};
-use wabench::{tests::Tests, WASMTest};
+use super::{Location, Request, Response, TestResult};
+use wabench::WASMTest;
 
-pub trait Location {
-    type Reach: agent::Discoverer;
-    fn url() -> &'static str;
+#[derive(Debug, Clone, PartialEq)]
+pub enum RunnerImpl {
+  Wasi,
+  Stdweb,
+  Embedded
 }
 
-pub struct WasiWorker;
-impl Location for WasiWorker {
-    type Reach = agent::Public;
-    fn url() -> &'static str {
-        "wasi/worker.js"
-    }
+impl RunnerImpl {
+  const RUNNERS: [Self; 3] = [Self::Wasi, Self::Stdweb, Self::Embedded];
+  /// Return list of available tests enum
+  pub fn list() -> Vec<Self> {
+    Self::RUNNERS.to_vec()
+  }
 }
 
-pub struct StdwebWorker;
-impl Location for StdwebWorker {
-    type Reach = agent::Public;
-    fn url() -> &'static str {
-        "stdweb/stdweb-worker.js"
-    }
-}
-
-pub struct EmbeddedWorker;
-impl Location for EmbeddedWorker {
-    type Reach = agent::Context;
-    fn url() -> &'static str {
-        "main.js"
-    }
+impl ToString for RunnerImpl {
+  fn to_string(&self) -> String {
+      match self {
+        RunnerImpl::Wasi => "wasi worker (separate thread)".to_string(),
+        RunnerImpl::Stdweb => "stdweb worker (separate thread)".to_string(),
+        RunnerImpl::Embedded => "embedded (same thread)".to_string(),
+     }
+   }
 }
 
 pub struct TestRunner<L: 'static+Location> {
     link: agent::AgentLink<TestRunner<L>>
 }
 
-#[derive(Serialize, Deserialize, Debug)]
-pub enum Request {
-    RunTest(Tests),
-}
-
-#[derive(Serialize, Deserialize, Debug)]
-pub enum Response {
-    TestCompleted(TestResult),
-    TestInitialized(Tests),
-}
-
-#[derive(Serialize, Deserialize, Debug)]
-pub struct TestResult {
-    pub test: Tests,
-    pub time: u64,
-}
 
 impl<L: 'static+Location> agent::Agent for TestRunner<L> {
     type Reach = L::Reach;
