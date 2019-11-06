@@ -1,8 +1,10 @@
 use yew::{ComponentLink, Bridge};
 use yew::agent::Bridged;
-use super::{WasiWorker, StdwebWorker, EmbeddedWorker, Request};
+use super::{WasiWorker, StdwebWorker, EmbeddedWorker};
+use super::data::{Request, RunnerImpl};
 use super::runner::*;
 use super::app::{App, Msg};
+
 
 pub struct Runners {
   wasi: Box<dyn Bridge<TestRunner<WasiWorker>>>,
