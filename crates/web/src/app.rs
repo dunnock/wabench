@@ -8,7 +8,7 @@ pub struct State {
   running: Option<Tests>,
   initialized: Option<Tests>,
   completed: Option<TestResult>,
-  tests: TestRunsLog
+  tests: TestRunsState
 }
 
 pub struct App {
@@ -111,7 +111,7 @@ impl Component for App {
         running: None,
         initialized: None,
         completed: None,
-        tests: TestRunsLog::new()
+        tests: TestRunsState::new()
       },
       runners: Runners::init(link)
     }
