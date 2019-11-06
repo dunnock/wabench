@@ -10,19 +10,20 @@ There are many WebAssembly performance results published, though most of those p
 
 ## Trial and error notes
 
-Unoptimized dev build for all targets I've tried working 10+ times slower, so I focused on release timings.
+Unoptimized dev build for all targets seems working 10+ times slower, so I focused on release timings.
 
 Building for wasm32-wasi target appeared to be fastest way to go, allowed to run benchmarks from console via `wasmer` and `wavm` and browser using `wasmer`. Those benchmarks displayed timings sometimes better than running optimized release build (probably due to memory reallocation in native version). 
 
-Using wasm-pack via webpack to compile web application appeared to be the most complicated setup, code resides under `wasm_bindgen` directory. Also I did not manage to setup service worker, since yew workers are natively built with cargo web, hence tests are blocking web page with this setup. Timing appeared 2 times slower than of WASI. This approach seems gives most control of JavaScript application setup.
+Using wasm-pack via webpack to compile web application appeared to be the most complicated setup, code resides under `examples/wasm_bindgen` directory. Also I did not manage to setup service worker, since yew workers are natively built with cargo web, hence tests are blocking web page with this setup. Timing appeared 2 times slower than of WASI. This approach seems gives most control of JavaScript application setup.
 
 Using stdweb stack to compile web application appeared to be the quite simple, with `Public` worker in separate thread as well as `Context` initial run time appeared to be 2 times slower than wasm32-wasi, same as wasm-bindgen.
 
 Setting up WASI service worker appered to be the most challenging, primarily from the point of providing communication of binary data between worker and web page: 
  - polling API is not quite ready yet, thread:sleep is not implemented on some VMs and does not actually return control to JS engine, file polling is not implemented in JS at the moment. Hence implementing event loop is not feasible
-  - I did not figure out how to pass arrays as function parameters
+ - I did not figure out how to pass arrays as function parameters
   Most feasible option appeared to be establishing communication via filesystem (thanks to @wasmer/wasmFm and @wasmer/terminal for beautiful idea)
 
+Safari and wasmer/wasi polyfill does not play well together.
 
 ## Plan
 
@@ -32,8 +33,9 @@ Setting up WASI service worker appered to be the most challenging, primarily fro
 - [ ] Fibonacci
 - [X] Webapp in subdir web
 - [X] Add WASI worker setup for yew to speed up
-- [ ] Fix bug of running second test: BufferedStdin read on position not supported: 21
+- [X] Fix bug of running second test: BufferedStdin read on position not supported: 21
 - [ ] Setup build.rs: split crates for stdweb and wasi workers, app, deployment/styles
+- [ ] Fix Safari Instant clock value issue
 
 
 ## Acknowledgements

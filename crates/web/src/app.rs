@@ -3,6 +3,16 @@ use yew::{html, Component, ComponentLink, Html, ShouldRender};
 use super::data::*;
 use super::runners::*;
 
+const TITLE_TEXT: &'static str = "WASM browser benchmarks";
+const MOTIVATION_TEXT: &'static str = r#"
+  There are many WebAssembly performance results published, 
+  though most of those performed on a limited set of devices 
+  and/or browsers. Secondary, many benchmarks actually include 
+  data initialization time and time taken by context outside
+  of actual benchmarked code. In this project we will focus on 
+  measuring pure WebAssembly code execution timings, not including 
+  context and data initialization.
+"#;
 
 pub struct State {
   tests: TestRunsState
@@ -59,8 +69,9 @@ impl Component for App {
     };
     html! {
       <div class="container">
-        <h1> {"WASM browser benchmarks"} </h1>
+        <h1> { TITLE_TEXT } </h1>
         <table class="table table-responsive">
+          <caption> { MOTIVATION_TEXT } </caption>
           <thead>
             <tr>
               <th>{"Environment"}</th>
