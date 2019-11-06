@@ -1,14 +1,12 @@
-# Yet another WASM benchmark (WASI focused)
+# Yet another WASM benchmark (including WASI)
 
 ## Goal
 
-Web3 performance benchmark for WASM. WASM benchmarks performed on user agents, all the statistic is open and shared for comparison. 
+WASM benchmark running on user devices. Compare data from range of web devices, browsers, self collecting stats.
 
 ## Problem statements
 
-There are many WebAssembly performance results published, though most of those performed on a limited set of devices owned by benchmark author, while web is truly heterogeneous, varying not only by hardware, browser, OS and versions, but also various random factors.
-
-Another problem is that many benchmarks actually WASM integration performance tests including whole WASM context and data initialization time. In this project we will focus on measuring pure WebAssembly code execution timings, not including context and data initialization.
+There are many WebAssembly performance results published, though most of those performed on a limited set of devices and/or browsers. Secondary, many benchmarks actually include data initialization time and time taken by context outside of actual benchmarked code. In this project we will focus on measuring pure WebAssembly code execution timings, not including context and data initialization.
 
 ## Trial and error notes
 
