@@ -5,9 +5,6 @@ use super::runners::*;
 
 
 pub struct State {
-  running: Option<Tests>,
-  initialized: Option<Tests>,
-  completed: Option<TestResult>,
   tests: TestRunsState
 }
 
@@ -67,39 +64,66 @@ impl RunnerImpl {
       }
     }
   }
-  fn headers() -> Html<App> {
-    let display_item = |item: &RunnerImpl| { html! { <th> { item.header() } </th> } };
+  fn render_items<DF>(f: DF) -> Html<App>
+    where DF: Fn(RunnerImpl)->Html<App> 
+  {
     html! {
       <>
-        { RunnerImpl::list().iter().map(display_item).collect::<Html<App>>() }
+        { RunnerImpl::list().into_iter().map(f).collect::<Html<App>>() }
       </>
     }
+  }
+  fn headers() -> Html<App> {
+    Self::render_items(
+      |item| { html! { <th> { item.header() } </th> } }
+    )
   }
   fn descriptions() -> Html<App> {
-    let display_item = |item: &RunnerImpl| { html! { <td> { item.description() } </td> } };
-    html! {
-      <>
-        { RunnerImpl::list().iter().map(display_item).collect::<Html<App>>() }
-      </>
-    }
+    Self::render_items(
+      |item| { html! { <td> { item.description() } </td> } }
+    )
   }
-  fn runners(test: &Tests) -> Html<App> {
-    let display_item = |test: &Tests, runner: &RunnerImpl| {
-      let msg = Msg::StartTest(test.clone(), runner.clone());
-      html! { 
-        <td> 
-          <button onclick=|_| msg.clone() class="btn">{ "start test"}</button>
-        </td>
+  fn runners(test: Tests) -> Html<App> {
+    Self::render_items(
+      |runner| {
+        let msg = Msg::StartTest(test, runner);
+        html! { 
+          <td> 
+            <button onclick=|_| msg.clone() class="btn">{ "start test"}</button>
+          </td>
+        }
       }
-    };
-    html! {
+    )
+  }
+  fn results(test: Tests, tests: &TestRunsState) -> Html<App> {
+    Self::render_items(
+      |runner| {
+        html! { 
+          <td> 
+            { tests.get(test, runner).map(|record| record.render()).unwrap_or("".into()) }
+          </td>
+        }
+      }
+    )
+  }
+}
+
+
+impl TestRunState {
+  pub fn render(&self) -> Html<App> {
+    let empty = || html! {};
+    let in_div = |s: String| html! { <div>{s}</div> };
+    html!{
       <>
-        { RunnerImpl::list().iter().map(|runner| display_item(test, runner)).collect::<Html<App>>() }
+        { if self.pending { "pending..." } else { "" } }
+        { if self.initialized { in_div("data initialized...".into()) } else { empty() } }
+        { if let Some(result) = &self.completed { 
+          in_div(format!("completed with avg time ~ {} ms", result.time/1_000_000)) 
+        } else { empty() } }
       </>
     }
   }
 }
-
 
 impl Component for App {
   type Message = Msg;
@@ -108,9 +132,6 @@ impl Component for App {
   fn create(_: Self::Properties, link: ComponentLink<Self>) -> Self {
     App {
       state: State {
-        running: None,
-        initialized: None,
-        completed: None,
         tests: TestRunsState::new()
       },
       runners: Runners::init(link)
@@ -120,26 +141,27 @@ impl Component for App {
   fn update(&mut self, msg: Self::Message) -> ShouldRender {
     match msg {
       Msg::StartTest(test, runner) => {
-        self.state.running = Some(test.clone());
-        self.runners.send(&runner, Request::RunTest(test, runner.clone()));
+        self.state.tests.log_request(test, runner);
+        self.runners.send(&runner, Request::RunTest(test, runner));
       },
-      Msg::TestResult(Response::TestCompleted(runner, result)) => {
-        self.state.running = None;
-        self.state.completed = Some(result);
-      },
-      Msg::TestResult(Response::TestInitialized(test, runner)) => {
-        self.state.initialized = Some(test);
+      Msg::TestResult(response) => {
+        self.state.tests.log_response(response);
       }
     };
     true
   }
 
   fn view(&self) -> Html<Self> {
-    let test_row = |test: &Tests| html! {
-      <tr>
-        <th>{ test.to_string() }</th>
-        { RunnerImpl::runners(&test) }
-      </tr>
+    let test_row = |test: Tests| html! {
+      <>
+        <tr>
+          <th rowspan={"2"}>{ test.to_string() }</th>
+          { RunnerImpl::runners(test) }
+        </tr>
+        <tr>
+          { RunnerImpl::results(test, &self.state.tests) }
+        </tr>
+      </>
     };
     html! {
       <div class="container">
@@ -156,19 +178,9 @@ impl Component for App {
               <th>{"Information"}</th>
               { RunnerImpl::descriptions() }
             </tr>
-            { Tests::list().iter().map(test_row).collect::<Html<App>>() }
+            { Tests::list().into_iter().map(test_row).collect::<Html<App>>() }
           </tbody>
         </table>
-        
-        <div class="row">
-        { if let Some(test) = &self.state.running { format!("Running test {}", test.to_string()) } else { "".to_string() } }
-        </div>
-        <div class="row">
-        { if let Some(test) = &self.state.initialized { format!("Test {} data initialized", test.to_string()) } else { "".to_string() } }
-        </div>
-        <div class="row">
-        { if let Some(bench) = &self.state.completed { format!("Completed test {} with average time {}ns", bench.test.to_string(), bench.time) } else { "".to_string() } }
-        </div>
       </div>
     }
   }

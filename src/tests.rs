@@ -8,7 +8,7 @@ use super::WASMTest;
 /// let test = Tests::NDArray.init();
 /// println!("Completed test {} with avg time: {}", test.to_string(), test.benchmark(100));
 /// 
-#[derive(Serialize, Deserialize, Debug, Clone, PartialEq, Eq, Hash)]
+#[derive(Serialize, Deserialize, Debug, Clone, PartialEq, Eq, Hash, Copy)]
 pub enum Tests {
   NDArray,
 }

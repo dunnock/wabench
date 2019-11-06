@@ -2,7 +2,7 @@ use serde::{Serialize, Deserialize};
 use wabench::tests::Tests;
 use std::collections::HashMap;
 
-#[derive(Serialize, Deserialize, Debug, Clone, PartialEq, Hash, Eq)]
+#[derive(Serialize, Deserialize, Debug, PartialEq, Hash, Eq, Clone, Copy)]
 pub enum RunnerImpl {
   Wasi,
   Stdweb,
@@ -27,11 +27,11 @@ pub struct TestResult {
 }
 
 pub struct TestRunState {
-  runner: RunnerImpl,
-  test: Tests,
-  pending: bool,
-  initialized:  bool,
-  completed: Option<TestResult>
+  pub runner: RunnerImpl,
+  pub test: Tests,
+  pub pending: bool,
+  pub initialized:  bool,
+  pub completed: Option<TestResult>
 }
 
 impl TestRunState {
@@ -52,19 +52,22 @@ impl TestRunsState {
     }
   }
   pub fn log_request(&mut self, test: Tests, runner: RunnerImpl) {
-    let key = (test.clone(), runner.clone());
+    let key = (test, runner);
     self.data.insert(key, TestRunState::new(test, runner, true, false, None));
   }
   pub fn log_response(&mut self, response: Response) {
     let record = match response {
       Response::TestCompleted(runner, result) => {
-        TestRunState::new(result.test.clone(), runner, false, true, Some(result))
+        TestRunState::new(result.test, runner, false, true, Some(result))
       },
       Response::TestInitialized(test, runner) => {
         TestRunState::new(test, runner, false, true, None)
       }
     };
-    let key = (record.test.clone(), record.runner.clone());
+    let key = (record.test, record.runner);
     self.data.insert(key, record);
+  }
+  pub fn get(&self, test: Tests, runner: RunnerImpl) -> Option<&TestRunState> {
+    self.data.get(&(test, runner))
   }
 }
