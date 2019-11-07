@@ -59,7 +59,7 @@ impl Component for App {
     let test_row = |test: Tests| html! {
       <>
         <tr>
-          <th rowspan={"2"}>{ test.to_string() }</th>
+          <th rowspan={"2"}><pre>{ test.to_string() }</pre></th>
           { RunnerImpl::runners(test) }
         </tr>
         <tr class="info">

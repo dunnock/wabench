@@ -21,4 +21,12 @@ impl NDArrayTest {
       b: Array1::random(size, Uniform::new(0.0, 1.0)),
     }
   }
+
+  pub fn description(size: usize) -> String { 
+    format!(
+r#"a: [{}, [0.0, 1.0)]
+b: [{}, [0.0, 1.0)]
+test = || (&a + &b).sum()"#, size, size)
+  }
 }
+

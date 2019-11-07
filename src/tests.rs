@@ -20,7 +20,7 @@ pub enum Tests {
 }
 
 impl Tests {
-  const TESTS: [Tests; 3] = [Tests::NDArray10M, Tests::NDArray20M, Tests::NDArray30M];
+  const TESTS: [Tests; 2] = [Tests::NDArray10M, Tests::NDArray30M];
 
   /// Return list of available tests enum
   pub fn list() -> Vec<Self> {
@@ -42,9 +42,9 @@ impl ToString for Tests {
   fn to_string(&self) -> String {
       match self {
         Tests::NDArrayUnit => "NDArray test for unit tests".into(),
-        Tests::NDArray10M => "(A+B).sum(), float32 arrays of 10M".into(),
-        Tests::NDArray20M => "(A+B).sum(), float32 arrays of 10M".into(),
-        Tests::NDArray30M => "(A+B).sum(), float32 arrays of 10M".into(),
+        Tests::NDArray10M => NDArrayTest::description(10_000_000),
+        Tests::NDArray20M => NDArrayTest::description(20_000_000),
+        Tests::NDArray30M => NDArrayTest::description(30_000_000),
      }
    }
 }
