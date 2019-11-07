@@ -9,13 +9,14 @@ use instant::{Instant};
 /// Trait for tests
 /// 
 /// Usage:
-/// test.init(); // will initialize test data
+/// ```
+/// use wabench::ndarray_test::NDArrayTest;
+/// use wabench::WASMTest;
+/// let test = NDArrayTest::new(10);
 /// println!("Average test took {} ns", test.benchmark());
+/// ```
 pub trait WASMTest {
   const RUNS: u128 = 100;
-
-  /// Initialize test data
-  fn init() -> Self;
 
   /// Run test once
   fn run(self: &Self);

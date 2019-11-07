@@ -1,5 +1,5 @@
 use wasi_worker_yew::*;
-use wabench_web::runner::{TestRunner, WasiWorker};
+use wabench_web::{runner::TestRunner, WasiWorker};
 
 
 fn main() {

@@ -1,3 +1,5 @@
+pub mod views;
+
 use serde::{Serialize, Deserialize};
 use wabench::tests::Tests;
 use std::collections::HashMap;

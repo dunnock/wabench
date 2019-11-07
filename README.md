@@ -2,7 +2,7 @@
 
 ## Goal
 
-WASM benchmark running on user devices. Compare data from range of web devices, browsers, self collecting stats.
+WASM benchmark running on user devices. Compare data from range of web devices, browsers, comparing WASM execution in different environments.
 
 ## Problem statements
 
@@ -12,7 +12,7 @@ There are many WebAssembly performance results published, though most of those p
 
 Unoptimized dev build for all targets seems working 10+ times slower, so I focused on release timings.
 
-Building for wasm32-wasi target appeared to be fastest way to go, allowed to run benchmarks from console via `wasmer` and `wavm` and browser using `wasmer`. Those benchmarks displayed timings sometimes better than running optimized release build (probably due to memory reallocation in native version). 
+Building for wasm32-wasi target appeared to be fastest way to go, allowed to run benchmarks from console via `wasmer` and `wavm` and browser using `@wasmer/wasi`. Those benchmarks displayed timings sometimes better than running optimized release build (probably due to memory reallocation in native version). 
 
 Using wasm-pack via webpack to compile web application appeared to be the most complicated setup, code resides under `examples/wasm_bindgen` directory. Also I did not manage to setup service worker, since yew workers are natively built with cargo web, hence tests are blocking web page with this setup. Timing appeared 2 times slower than of WASI. This approach seems gives most control of JavaScript application setup.
 
@@ -36,7 +36,8 @@ Safari and wasmer/wasi polyfill does not play well together.
 - [X] Fix bug of running second test: BufferedStdin read on position not supported: 21
 - [ ] Setup build.rs: split crates for stdweb and wasi workers, app, deployment/styles
 - [ ] Fix Safari Instant clock value issue
-
+- [ ] Embed let's encrypt for wabench container
+- [ ] Convert wabench web into self-hosting server with let's encrypt and static
 
 ## Acknowledgements
 

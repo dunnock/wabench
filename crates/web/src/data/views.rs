@@ -1,5 +1,5 @@
-use super::data::*;
-use super::app::{App, Msg};
+use super::*;
+use crate::app::{App, Msg};
 use yew::{html, Html};
 use wabench::tests::Tests;
 

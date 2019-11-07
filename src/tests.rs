@@ -2,19 +2,25 @@ use serde::{Serialize, Deserialize};
 use super::ndarray_test::NDArrayTest;
 use super::WASMTest;
 
-/// Tests factory with typechecked list of available tests
+/// Tests factory - enum of available tests
 /// 
 /// Usage:
-/// let test = Tests::NDArray.init();
-/// println!("Completed test {} with avg time: {}", test.to_string(), test.benchmark(100));
-/// 
+/// ```
+/// use wabench::tests::Tests;
+/// use wabench::WASMTest;
+/// let test = Tests::NDArrayUnit.init();
+/// println!("Created {}", Tests::NDArrayUnit.to_string());
+/// ```
 #[derive(Serialize, Deserialize, Debug, Clone, PartialEq, Eq, Hash, Copy)]
 pub enum Tests {
-  NDArray,
+  NDArrayUnit,
+  NDArray10M,
+  NDArray20M,
+  NDArray30M,
 }
 
 impl Tests {
-  const TESTS: [Tests; 1] = [Tests::NDArray];
+  const TESTS: [Tests; 3] = [Tests::NDArray10M, Tests::NDArray20M, Tests::NDArray30M];
 
   /// Return list of available tests enum
   pub fn list() -> Vec<Self> {
@@ -24,9 +30,10 @@ impl Tests {
   /// Initialize test and return its instance
   pub fn init(&self) -> impl WASMTest {
     match self {
-      Self::NDArray => {
-        NDArrayTest::init()
-      }
+      Self::NDArrayUnit => NDArrayTest::new(10),
+      Self::NDArray10M => NDArrayTest::new(10_000_000),
+      Self::NDArray20M => NDArrayTest::new(20_000_000),
+      Self::NDArray30M => NDArrayTest::new(30_000_000)
     }
   }
 }
@@ -34,7 +41,10 @@ impl Tests {
 impl ToString for Tests {
   fn to_string(&self) -> String {
       match self {
-        Tests::NDArray => NDArrayTest::NAME.to_string(),
+        Tests::NDArrayUnit => "NDArray test for unit tests".into(),
+        Tests::NDArray10M => "(A+B).sum(), float32 arrays of 10M".into(),
+        Tests::NDArray20M => "(A+B).sum(), float32 arrays of 10M".into(),
+        Tests::NDArray30M => "(A+B).sum(), float32 arrays of 10M".into(),
      }
    }
 }
