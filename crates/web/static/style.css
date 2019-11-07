@@ -1,0 +1,11 @@
+@media screen and (max-width: 800px) {
+  .description {
+    display: none;
+  }
+  .no-mobile {
+    display: none;
+  }
+  .scalable {
+    font-size: 0.7em;
+  }
+}

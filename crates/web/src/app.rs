@@ -4,18 +4,28 @@ use super::data::*;
 use super::runners::*;
 
 const TITLE_TEXT: &'static str = "WASM browser benchmarks";
-const MOTIVATION_TEXT: &'static str = r#"
-  WASM benchmark running on user devices. Compare data from range 
-  of web devices, browsers, comparing WASM execution in 
-  different environments.
-  Secondary, there is a problem with many exising benchmarks 
-  comparing JS vs WASM as they include data initialization time 
-  and time taken by context outside of actual benchmarked code. 
-  In this project we will focus on 
-  measuring pure WebAssembly code execution timings, not including 
-  context and data initialization, e.g. function execution measured
-  from within WASM module exactly around test function.
-"#;
+fn motivation() -> Html<App> {
+  html! {
+    <>
+      <p>
+      { r#"This benchmark is focused on measuring pure WebAssembly code execution 
+        timings, it does not include context and data initialization, 
+        e.g. function execution measured from within WASM module exactly 
+        around test function. It represents workloads heavy on memory usage and
+        calculation - think of video transcoding, image processing, archiving,
+        machine learning, physics etc."# }
+      </p>
+      <p>
+      {  r#"Secondary it allows us to compare data from range of real web devices, browsers,
+        to get a real web heterogenous picture - community driven benchmark!"# }
+      </p>
+      <p>
+      { "Have idea of any good test addition - " } 
+        <a href="https://github.com/dunnock/wabench/">{ "PRs are welcome!" }</a>
+      </p>
+    </>
+  }
+}
 
 pub struct State {
   tests: TestRunsState
@@ -62,7 +72,7 @@ impl Component for App {
     let test_row = |test: Tests| html! {
       <>
         <tr>
-          <th rowspan={"2"}><pre>{ test.to_string() }</pre></th>
+          <th rowspan={"2"}><pre class="scalable">{ test.to_string() }</pre></th>
           { RunnerImpl::runners(test) }
         </tr>
         <tr>
@@ -74,7 +84,7 @@ impl Component for App {
       <div class="container">
         <h1> { TITLE_TEXT } </h1>
         <table class="table table-responsive table-striped">
-          <caption> { MOTIVATION_TEXT } </caption>
+          <caption> { motivation() } </caption>
           <thead>
             <tr>
               <th>{"Environment"}</th>

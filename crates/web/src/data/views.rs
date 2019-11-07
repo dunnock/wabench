@@ -65,7 +65,7 @@ impl RunnerImpl {
   }
   pub fn descriptions() -> Html<App> {
     Self::render_items(
-      |item| { html! { <td> { item.description() } </td> } }
+      |item| { html! { <td class="description"> { item.description() } </td> } }
     )
   }
   pub fn runners(test: Tests) -> Html<App> {
