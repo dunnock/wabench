@@ -101,10 +101,12 @@ impl TestRunState {
     html!{
       <>
         { if self.pending { "pending..." } else { "" } }
-        { if self.initialized { in_div("data initialized...".into()) } else { empty() } }
         { if let Some(result) = &self.completed { 
-          in_div(format!("completed with avg time ~ {} ms", result.time/1_000_000)) 
-        } else { empty() } }
+            in_div(format!("completed with avg time ~ {} ms", result.time/1_000_000)) 
+          } else if self.initialized { 
+            in_div("data initialized...".into()) 
+          } else { empty() } 
+        }
       </>
     }
   }
