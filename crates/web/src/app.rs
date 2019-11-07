@@ -62,7 +62,7 @@ impl Component for App {
           <th rowspan={"2"}><pre>{ test.to_string() }</pre></th>
           { RunnerImpl::runners(test) }
         </tr>
-        <tr class="info">
+        <tr>
           { RunnerImpl::results(test, &self.state.tests) }
         </tr>
       </>
@@ -70,7 +70,7 @@ impl Component for App {
     html! {
       <div class="container">
         <h1> { TITLE_TEXT } </h1>
-        <table class="table table-responsive">
+        <table class="table table-responsive table-striped">
           <caption> { MOTIVATION_TEXT } </caption>
           <thead>
             <tr>
