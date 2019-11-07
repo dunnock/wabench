@@ -5,13 +5,16 @@ use super::runners::*;
 
 const TITLE_TEXT: &'static str = "WASM browser benchmarks";
 const MOTIVATION_TEXT: &'static str = r#"
-  There are many WebAssembly performance results published, 
-  though most of those performed on a limited set of devices 
-  and/or browsers. Secondary, many benchmarks actually include 
-  data initialization time and time taken by context outside
-  of actual benchmarked code. In this project we will focus on 
+  WASM benchmark running on user devices. Compare data from range 
+  of web devices, browsers, comparing WASM execution in 
+  different environments.
+  Secondary, there is a problem with many exising benchmarks 
+  comparing JS vs WASM as they include data initialization time 
+  and time taken by context outside of actual benchmarked code. 
+  In this project we will focus on 
   measuring pure WebAssembly code execution timings, not including 
-  context and data initialization.
+  context and data initialization, e.g. function execution measured
+  from within WASM module exactly around test function.
 "#;
 
 pub struct State {
