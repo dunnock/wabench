@@ -1,10 +1,13 @@
-pub mod ndarray_test;
+pub mod ndarray_sum;
+pub mod ndarray_mul;
 pub mod tests;
 
 #[cfg(not(target_os="unknown"))]
 use std::time::Instant;
 #[cfg(target_os="unknown")]
 use instant::{Instant};
+
+const RUNS: u128 = 100;
 
 /// Trait for tests
 /// 
@@ -16,17 +19,15 @@ use instant::{Instant};
 /// println!("Average test took {} ns", test.benchmark());
 /// ```
 pub trait WASMTest {
-  const RUNS: u128 = 100;
-
   /// Run test once
   fn run(self: &Self);
 
   /// Will run test $RUN times and return average execution time in nanoseconds
   fn benchmark(self: &Self) -> u128 {
     let now = Instant::now();
-    for _i in 1..Self::RUNS {
+    for _i in 1..RUNS {
         self.run()
     };
-    now.elapsed().as_nanos() / Self::RUNS
+    now.elapsed().as_nanos() / RUNS
   }
 }

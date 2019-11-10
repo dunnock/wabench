@@ -4,9 +4,9 @@ use wabench::WASMTest;
 fn main() {
     for test in Tests::list() {
         let name = test.to_string();
-        println!("Starting {}", name);
+        println!("Starting\n{}", name);
         let instance = test.init();
-        println!("{}: Initialized data", name);
-        println!("{}: Average per loop {}ms", name, (instance.benchmark() / 1_000_000) as f64 );
+        println!("Initialized data..");
+        println!("Average per loop {}ms", (instance.benchmark() / 1_000_000) as f64 );
     }
 }
