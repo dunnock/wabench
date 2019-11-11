@@ -8,6 +8,14 @@ WASM benchmark running on user devices. Compare data from range of web devices, 
 
 There are many WebAssembly performance results published, though most of those performed on a limited set of devices and/or browsers. Secondary, many benchmarks actually include data initialization time and time taken by context outside of actual benchmarked code. In this project we will focus on measuring pure WebAssembly code execution timings, not including context and data initialization.
 
+## Executing locally
+
+Project's workspace structure:
+
+ - tests sources and implementations located under `./src`
+ - main native runner is `./src/main.rs`
+ - web runner and browser app [./crates/web](https://github.com/dunnock/wabench/tree/master/crates/web)
+
 ## Trial and error notes
 
 Unoptimized dev build for all targets seems working 10+ times slower, so I focused on release timings.
@@ -37,7 +45,7 @@ Safari and wasmer/wasi polyfill does not play well together.
 - [ ] Setup build.rs: split crates for stdweb and wasi workers, app, deployment/styles
 - [ ] Fix Safari Instant clock value issue
 - [ ] Embed let's encrypt for wabench container
-- [ ] Convert wabench web into self-hosting server with let's encrypt and static
+- [ ] Publish results somewhere...?
 
 ## Acknowledgements
 
