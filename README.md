@@ -8,7 +8,7 @@ WASM benchmark running on user devices. Compare data from range of web devices, 
 
 There are many WebAssembly performance results published, though most of those performed on a limited set of devices and/or browsers. Secondary, many benchmarks actually include data initialization time and time taken by context outside of actual benchmarked code. In this project we will focus on measuring pure WebAssembly code execution timings, not including context and data initialization.
 
-## Executing locally
+## Running locally
 
 Project's workspace structure:
 
