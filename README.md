@@ -2,7 +2,7 @@
 
 ## Goal
 
-WASM benchmark running on user devices. Compare data from range of web devices, browsers, comparing WASM execution in different environments.
+WASM benchmark which allows to compare CPU intensive code execution on native vs browser WASI vs browser WASM (stdweb), comparing WASM execution in different environments.
 
 ## Problem statements
 
@@ -15,6 +15,13 @@ Project's workspace structure:
  - tests sources and implementations located under `./src`
  - main native runner is `./src/main.rs`
  - web runner and browser app [./crates/web](https://github.com/dunnock/wabench/tree/master/crates/web)
+
+To run all benchmarks in native target
+```
+cargo run --release
+```
+
+To run all benchmarks in browser see [./crates/web](https://github.com/dunnock/wabench/tree/master/crates/web)
 
 ## Trial and error notes
 
