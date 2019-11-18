@@ -53,6 +53,7 @@ Safari and wasmer/wasi polyfill does not play well together.
 - [ ] Fix Safari Instant clock value issue
 - [ ] Embed let's encrypt for wabench container
 - [ ] Publish results somewhere...?
+- [ ] Use [criterion](https://docs.rs/criterion/0.3.0/criterion/) for benchmarking
 
 ## Acknowledgements
 
