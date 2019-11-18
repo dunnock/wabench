@@ -1,8 +1,6 @@
 use yew::agent;
 use super::Location;
 use super::data::*;
-use wabench::WASMTest;
-
 
 pub struct TestRunner<L: 'static+Location> {
     link: agent::AgentLink<TestRunner<L>>

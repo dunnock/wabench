@@ -11,11 +11,10 @@ members = ["crates/*", "playground/wasibench"]
 ndarray = "0.13.0"
 ndarray-rand = "0.11.0"
 serde = { version = "1.0", features = ["derive"] }
+yew = "0.10"
 
 [patch.crates-io]
-# yew = { path = "../../../opensource/yew" }
-yew = { git = "https://github.com/yewstack/yew" }
-wasi-worker-yew = { path="../wasi-worker/crates/wasi-worker-yew" }
+#wasi-worker-yew = { path="../wasi-worker/crates/wasi-worker-yew" }
 
 [target.'cfg(cargo_web)'.dependencies]
 instant = { version = "0.1", features = ["now", "stdweb"] }

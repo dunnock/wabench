@@ -17,7 +17,7 @@ name = "worker"
 path = "src/bin/worker.rs"
 
 [dependencies]
-wasi-worker-yew = { version="0.3", path = "../../../wasi-worker/crates/wasi-worker-yew" }
+wasi-worker-yew = "0.4"
 yew = "0.10"
 log = "0.4"
 web_logger = "0.2"

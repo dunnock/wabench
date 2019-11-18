@@ -13,9 +13,9 @@ const RUNS: u128 = 100;
 /// 
 /// Usage:
 /// ```
-/// use wabench::ndarray_test::NDArrayTest;
+/// use wabench::ndarray_sum::NDArraySum;
 /// use wabench::WASMTest;
-/// let test = NDArrayTest::new(10);
+/// let test = NDArraySum::new(10);
 /// println!("Average test took {} ns", test.benchmark());
 /// ```
 pub trait WASMTest {

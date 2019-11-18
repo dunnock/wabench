@@ -1,5 +1,4 @@
 use wabench::tests::Tests;
-use wabench::WASMTest;
 
 fn main() {
     for test in Tests::list() {
