@@ -50,7 +50,7 @@ Safari and wasmer/wasi polyfill does not play well together.
 - [X] Add WASI worker setup for yew to speed up
 - [X] Fix bug of running second test: BufferedStdin read on position not supported: 21
 - [ ] Setup build.rs: split crates for stdweb and wasi workers, app, deployment/styles
-- [ ] Fix Safari Instant clock value issue
+- [X] Fix Safari Instant clock value issue
 - [ ] Embed let's encrypt for wabench container
 - [ ] Publish results somewhere...?
 - [ ] Use [criterion](https://docs.rs/criterion/0.3.0/criterion/) for benchmarking
