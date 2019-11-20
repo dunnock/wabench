@@ -11,7 +11,6 @@ members = ["crates/*", "playground/wasibench"]
 ndarray = "0.13.0"
 ndarray-rand = "0.11.0"
 serde = { version = "1.0", features = ["derive"] }
-yew = "0.10"
 
 [patch.crates-io]
 #wasi-worker-yew = { path="../wasi-worker/crates/wasi-worker-yew" }

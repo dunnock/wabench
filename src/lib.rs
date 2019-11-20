@@ -31,3 +31,17 @@ pub trait WASMTest {
     now.elapsed().as_nanos() / RUNS
   }
 }
+
+
+#[cfg(test)]
+mod test {
+  use super::ndarray_sum::NDArraySum;
+  use super::WASMTest;
+
+  #[test]
+  fn wasm_test() {
+    let test = NDArraySum::new(10);
+    assert!(test.benchmark() < 1_000_000_000);
+  }
+
+}
