@@ -28,4 +28,3 @@ impl Location for EmbeddedWorker {
         "main.js"
     }
 }
-

@@ -1,13 +1,12 @@
-use yew::agent;
-use super::Location;
 use super::data::*;
+use super::Location;
+use yew::agent;
 
-pub struct TestRunner<L: 'static+Location> {
-    link: agent::AgentLink<TestRunner<L>>
+pub struct TestRunner<L: 'static + Location> {
+    link: agent::AgentLink<TestRunner<L>>,
 }
 
-
-impl<L: 'static+Location> agent::Agent for TestRunner<L> {
+impl<L: 'static + Location> agent::Agent for TestRunner<L> {
     type Reach = L::Reach;
     type Message = String;
     type Input = Request;
@@ -19,17 +18,22 @@ impl<L: 'static+Location> agent::Agent for TestRunner<L> {
     }
 
     // Handle inner messages (of services of `send_back` callbacks)
-    fn update(&mut self, _msg: Self::Message) { /* ... */ }
+    fn update(&mut self, _msg: Self::Message) { /* ... */
+    }
 
     // Handle incoming messages from components of other agents.
     fn handle(&mut self, msg: Self::Input, who: agent::HandlerId) {
         match msg {
             Request::RunTest(test, runner) => {
                 let instance = test.init();
-                self.link.response(who, Response::TestInitialized(test.clone(), runner.clone()));
+                self.link
+                    .response(who, Response::TestInitialized(test.clone(), runner.clone()));
                 let time = instance.benchmark() as u64;
-                self.link.response(who, Response::TestCompleted(runner, TestResult{ test, time }));
-            },
+                self.link.response(
+                    who,
+                    Response::TestCompleted(runner, TestResult { test, time }),
+                );
+            }
         }
     }
 

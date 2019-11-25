@@ -1,5 +1,5 @@
-use yew::agent::Threaded;
 use wabench_web::{runner::TestRunner, StdwebWorker};
+use yew::agent::Threaded;
 
 fn main() {
     web_logger::init();

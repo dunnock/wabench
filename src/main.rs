@@ -6,6 +6,9 @@ fn main() {
         println!("Starting\n{}", name);
         let instance = test.init();
         println!("Initialized data..");
-        println!("Average per loop {}ms", (instance.benchmark() / 1_000_000) as f64 );
+        println!(
+            "Average per loop {}ms",
+            (instance.benchmark() / 1_000_000) as f64
+        );
     }
 }
