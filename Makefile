@@ -4,11 +4,10 @@ site: preinstall wasi stdweb main
 preinstall:
 	echo "Preinstall"
 	curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
-	set PATH="$(HOME)/.cargo/bin;$(PATH)"
-	rustup target add wasm32-unknown-unknown
+	~/.cargo/bin/rustup target add wasm32-unknown-unknown
 	-mkdir dist
-	-cargo install wasi-worker-cli
-	-cargo install cargo-web
+	-~/.cargo/bin/cargo install wasi-worker-cli
+	-~/.cargo/bin/cargo install cargo-web
 
 wasi: 
 	echo "Wasi worker"
@@ -19,12 +18,12 @@ wasi:
 stdweb: 
 	echo "Stdweb worker"
 	-mkdir dist/stdweb
-	cargo web build --bin stdweb-worker --release --target wasm32-unknown-unknown --package wabench-web
+	~/.cargo/bin/cargo web build --bin stdweb-worker --release --target wasm32-unknown-unknown --package wabench-web
 	cp target/wasm32-unknown-unknown/release/stdweb* dist/stdweb/
 
 main:
 	echo "Main website"
-	cargo web deploy --release --package wabench-web
+	~/.cargo/bin/cargo web deploy --release --package wabench-web
 	cp target/deploy/main.* dist
 	cp target/deploy/index.* dist
 	cp target/deploy/style.* dist
