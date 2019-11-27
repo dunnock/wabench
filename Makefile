@@ -11,7 +11,7 @@ preinstall:
 
 wasi: 
 	echo "Wasi worker"
-	cd crates/web; wasiworker deploy
+	cd crates/web; ~/.cargo/bin/wasiworker deploy
 	-mkdir dist/wasi
 	cp crates/web/dist/* dist/wasi
 
