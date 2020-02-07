@@ -22,14 +22,14 @@ impl<L: 'static + Location> agent::Agent for TestRunner<L> {
     }
 
     // Handle incoming messages from components of other agents.
-    fn handle(&mut self, msg: Self::Input, who: agent::HandlerId) {
+    fn handle_input(&mut self, msg: Self::Input, who: agent::HandlerId) {
         match msg {
             Request::RunTest(test, runner) => {
                 let instance = test.init();
                 self.link
-                    .response(who, Response::TestInitialized(test.clone(), runner.clone()));
+                    .respond(who, Response::TestInitialized(test.clone(), runner.clone()));
                 let time = instance.benchmark() as u64;
-                self.link.response(
+                self.link.respond(
                     who,
                     Response::TestCompleted(runner, TestResult { test, time }),
                 );

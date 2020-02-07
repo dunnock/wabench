@@ -1,7 +1,7 @@
 use super::*;
 use crate::app::{App, Msg};
 use wabench::tests::Tests;
-use yew::{html, Html};
+use yew::{html, Html, ComponentLink};
 
 impl RunnerImpl {
     pub fn list() -> Vec<RunnerImpl> {
@@ -14,7 +14,7 @@ impl RunnerImpl {
             RunnerImpl::Embedded => "Embedded".to_string(),
         }
     }
-    pub fn description(&self) -> Html<App> {
+    pub fn description(&self) -> Html {
         match self {
             RunnerImpl::Wasi => html! {
               <>
@@ -48,37 +48,37 @@ impl RunnerImpl {
             },
         }
     }
-    fn render_items<DF>(f: DF) -> Html<App>
+    fn render_items<DF>(f: DF) -> Html
     where
-        DF: Fn(RunnerImpl) -> Html<App>,
+        DF: Fn(RunnerImpl) -> Html,
     {
         html! {
           <>
-            { RunnerImpl::list().into_iter().map(f).collect::<Html<App>>() }
+            { RunnerImpl::list().into_iter().map(f).collect::<Html>() }
           </>
         }
     }
-    pub fn headers() -> Html<App> {
+    pub fn headers() -> Html {
         Self::render_items(|item| {
             html! { <th> { item.header() } </th> }
         })
     }
-    pub fn descriptions() -> Html<App> {
+    pub fn descriptions() -> Html {
         Self::render_items(|item| {
             html! { <td class="description"> { item.description() } </td> }
         })
     }
-    pub fn runners(test: Tests) -> Html<App> {
+    pub fn runners(link: ComponentLink<App>, test: Tests) -> Html {
         Self::render_items(|runner| {
-            let msg = Msg::StartTest(test, runner);
+            let onclick = link.callback(move |_| Msg::StartTest(test, runner));
             html! {
               <td>
-                <button onclick=|_| msg.clone() class="btn">{ "start test"}</button>
+                <button onclick=onclick class="btn">{ "start test"}</button>
               </td>
             }
         })
     }
-    pub fn results(test: Tests, tests: &TestRunsState) -> Html<App> {
+    pub fn results(test: Tests, tests: &TestRunsState) -> Html {
         Self::render_items(|runner| {
             html! {
               <td>
@@ -90,7 +90,7 @@ impl RunnerImpl {
 }
 
 impl TestRunState {
-    pub fn render(&self) -> Html<App> {
+    pub fn render(&self) -> Html {
         let empty = || html! {};
         let in_div = |s: String| html! { <div>{s}</div> };
         html! {

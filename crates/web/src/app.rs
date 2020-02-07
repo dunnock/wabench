@@ -4,7 +4,7 @@ use wabench::tests::Tests;
 use yew::{html, Component, ComponentLink, Html, ShouldRender};
 
 const TITLE_TEXT: &'static str = "WASM browser benchmarks";
-fn motivation() -> Html<App> {
+fn motivation() -> Html {
     html! {
       <>
         <p>
@@ -34,6 +34,7 @@ pub struct State {
 pub struct App {
     state: State,
     runners: Runners,
+    link: ComponentLink<Self>
 }
 
 #[derive(Clone)]
@@ -51,7 +52,8 @@ impl Component for App {
             state: State {
                 tests: TestRunsState::new(),
             },
-            runners: Runners::init(link),
+            runners: Runners::init(link.clone()),
+            link
         }
     }
 
@@ -68,13 +70,13 @@ impl Component for App {
         true
     }
 
-    fn view(&self) -> Html<Self> {
+    fn view(&self) -> Html {
         let test_row = |test: Tests| {
             html! {
               <>
                 <tr>
                   <th rowspan={"2"}><pre class="scalable">{ test.to_string() }</pre></th>
-                  { RunnerImpl::runners(test) }
+                  { RunnerImpl::runners(self.link.clone(), test) }
                 </tr>
                 <tr>
                   { RunnerImpl::results(test, &self.state.tests) }
@@ -98,7 +100,7 @@ impl Component for App {
                   <th></th>
                   { RunnerImpl::descriptions() }
                 </tr>
-                { Tests::list().into_iter().map(test_row).collect::<Html<App>>() }
+                { Tests::list().into_iter().map(test_row).collect::<Html>() }
               </tbody>
             </table>
           </div>

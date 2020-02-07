@@ -12,10 +12,10 @@ pub struct Runners {
 }
 
 impl Runners {
-    pub fn init(mut link: ComponentLink<App>) -> Self {
-        let callback_wasi = link.send_back(|res| Msg::TestResult(res));
-        let callback_stdweb = link.send_back(|res| Msg::TestResult(res));
-        let callback_embedded = link.send_back(|res| Msg::TestResult(res));
+    pub fn init(link: ComponentLink<App>) -> Self {
+        let callback_wasi = link.callback(|res| Msg::TestResult(res));
+        let callback_stdweb = link.callback(|res| Msg::TestResult(res));
+        let callback_embedded = link.callback(|res| Msg::TestResult(res));
         // spawns an instance of each runner
         Self {
             wasi: TestRunner::<WasiWorker>::bridge(callback_wasi),
