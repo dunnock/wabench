@@ -9,13 +9,13 @@ preinstall:
 	-~/.cargo/bin/cargo install wasi-worker-cli
 	-~/.cargo/bin/cargo install cargo-web
 
-wasi: 
+wasi:
 	echo "Wasi worker"
 	cd crates/web; RUST_BACKTRACE=1 ~/.cargo/bin/wasiworker deploy
 	-mkdir dist/wasi
 	cp crates/web/dist/* dist/wasi
 
-stdweb: 
+stdweb:
 	echo "Stdweb worker"
 	-mkdir dist/stdweb
 	~/.cargo/bin/cargo web build --bin stdweb-worker --release --target wasm32-unknown-unknown --package wabench-web
